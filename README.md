@@ -5,4 +5,4 @@ Authors:
 * Anthony Demattos (ademattos@highpoint.edu)
 * Vincent Fazio (vfazio@highpoint.edu)
 * Nathan Markle (nmarkle@highpoint.edu)
-* 
+* Blake Vogel (bvogel@highpoint.edu) 
