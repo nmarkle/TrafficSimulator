@@ -4,7 +4,7 @@ __author__ = "Nathan Markle"
 __created__ = "04-06-2021"
 __editor__ = "Nathan Markle"
 __edited__ = "04-07-2021"
-__rationale___ = "Updated constructor"
+__rationale___ = "Initial Creation"
 __version__ = "0.0.1"
 __maintainer__ = "Nathan Markle"
 __email__ = "nmarkle@highpoint.edu"
@@ -13,9 +13,9 @@ __status__ = "In development"
 class Traffic_Light:
     def __init__(self):
         """
-        The traffic light class will represent the discrete traffic lights 
-        present at each intersection within the simulation software. The 
-        Traffic_Light object will possess getters and setters for all of it’s 
+        The traffic light class will represent the discrete traffic lights
+        present at each intersection within the simulation software. The
+        Traffic_Light object will possess getters and setter for all of it's
         inherent class variables.
 
         Parameters
@@ -316,3 +316,135 @@ class Traffic_Light:
                 return self._yellow_status
             except Exception as e:
                 logger.write("Error! Could not set the new yellow_status:\n %s" % e)
+
+    def get_red_status(self):
+        """
+        Getter for the red_status
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            red_status (bool) : Class variable to store the state of the red_status
+        """
+        if(self._red_status == None):
+            logger.write("Error! The red_status contains no value.")
+        elif(type(self._red_status) != bool):
+            logger.write("Error! The yellow_status must be of type bool")
+        else:
+            try:
+                return self._red_status
+            except Exception as e:
+                logger.write("Error! Could not fetch the red_status:\n %s" % e)
+
+    def set_red_status(self, new_red_status):
+        """
+        Setter for the red_status
+
+        Parameters
+        ----------
+            new_red_status (bool) : New state of the red_status
+
+        Returns
+        -------
+            N/A
+        """
+        if(new_red_status == None):
+            logger.write("Error! New red_status cannot be NoneType.")
+        elif(type(new_red_status) != bool):
+            logger.write("Error! New red_status must be of type bool.")
+        else:
+            try:
+                self._red_status = new_red_status
+            except Exception as e:
+                logger.write("Error! Could not set the red_status:\n %s" % e)
+
+    def get_x_pos(self):
+        """
+        Getter for the x_pos
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            x_pos (int) : The x position of the Traffic Light
+        """
+        if(self._x_pos == None):
+            logger.write("Error! The x_pos contains no value.")
+        elif(type(self._x_pos) != int):
+            logger.write("Error! The x_pos must be of type int.")
+        else:
+            try:
+                return self._x_pos
+            except Exception as e:
+                logger.write("Error! Could not fetch the x_pos:\n %s" % e)
+
+    def set_x_pos(self, new_x_pos):
+        """
+        Setter for the x_pos
+
+        Parameters
+        ----------
+            new_x_pos (int) : The new value of the x_pos
+
+        Returns
+        -------
+            N/A
+        """
+        if(new_x_pos == None):
+            logger.write("Error! New x_pos cannot be NoneType.")
+        elif(type(new_x_pos) != int):
+            logger.write("Error! New x_pos must be of type int.")
+        else:
+            try:
+                self._red_status = new_x_pos
+            except Exception as e:
+                logger.write("Error! Could not set the x_pos:\n %s" % e)
+
+    def get_y_pos(self):
+        """
+        Getter for the y_pos
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            y_pos (int) : The y position of the Traffic Light
+        """
+        if(self._y_pos == None):
+            logger.write("Error! The y_pos contains no value.")
+        elif(type(self._y_pos) != int):
+            logger.write("Error! The y_pos must be of type int.")
+        else:
+            try:
+                return self._y_pos
+            except Exception as e:
+                logger.write("Error! Could not fetch the y_pos:\n %s" % e)
+
+    def set_y_pos(self, new_y_pos):
+        """
+        Setter for the y_pos
+
+        Parameters
+        ----------
+            new_y_pos (int) : The new value of the y_pos
+
+        Returns
+        -------
+            N/A
+        """
+        if(new_y_pos == None):
+            logger.write("Error! New y_pos cannot be NoneType.")
+        elif(type(new_y_pos) != int):
+            logger.write("Error! New y_pos must be of type int.")
+        else:
+            try:
+                self._red_status = new_y_pos
+            except Exception as e:
+                logger.write("Error! Could not set the y_pos:\n %s" % e)
