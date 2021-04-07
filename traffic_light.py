@@ -401,7 +401,7 @@ class Traffic_Light:
             logger.write("Error! New x_pos must be of type int.")
         else:
             try:
-                self._red_status = new_x_pos
+                self._x_pos = new_x_pos
             except Exception as e:
                 logger.write("Error! Could not set the x_pos:\n %s" % e)
 
