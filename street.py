@@ -189,7 +189,7 @@ class Street:
         """
         if(type(lane) != str):
             logger.write("Error! lane must be of type string")
-        elif(vehicle == None):
+        elif(lane == None):
             logger.write("Error! lane contains no value")
         elif(len(self._lane_list) == 0):
             logger.write("Error! lane_list is empty")
