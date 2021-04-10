@@ -3,7 +3,7 @@ import logger
 __author__ = "Blake Vogel"
 __created__ = "04-09-2021"
 __editor__ = "Blake Vogel"
-__edited__ = "04-09-2021"
+__edited__ = "04-10-2021"
 __rationale___ = "Initial Creation"
 __version__ = "0.0.1"
 __maintainer__ = "Blake Vogel"
