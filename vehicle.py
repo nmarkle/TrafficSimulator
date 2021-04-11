@@ -8,7 +8,7 @@ __rationale___ = "Initial Creation"
 __version__ = "0.0.1"
 __maintainer__ = "Blake Vogel"
 __email__ = "bvogel@highpoint.edu"
-__status__ = "In development first 4 methods need work"
+__status__ = "In development need to still go over perform_action method"
 
 class Vehicle:
     def __init__(self):
@@ -19,7 +19,7 @@ class Vehicle:
         it will be given a path, or a list of actions that will be performed 
         in order in order to get from point A to point B. The vehicle will also 
         have a wait time that is updated each time the vehicle waits at an intersection.
-        These variables can be accessed using getter and setter functions
+        These variables can be accessed using getter and setter functions.
 
         Parameters
         ----------
@@ -29,14 +29,14 @@ class Vehicle:
         -------
             choose_action()         : Get an action from action_list
             perform_action()        : Performs an action
-            update_action_list()    : 
-            update_position()       :
             get_x_pos()             : Getter for x_pos
             set_x_pos()             : Setter for x_pos
             get_y_pos()             : Getter for y_pos
             set_y_pos()             : Setter for y_pos
             get_wait_time()         : Getter for wait_time
             reset_wait_time()       : Reset for wait_time
+            add_action()            : Add action to action_list
+            delete_action()         : Delete action from action_list
         """
         self._path = []
         self._x_pos = None
@@ -47,7 +47,7 @@ class Vehicle:
     
     def choose_action(self):
         """
-        Gets the top action from the action_list
+        Returns the next action to be performed by choosing from the action_list class variable.
 
         Parameters
         ----------
@@ -66,11 +66,10 @@ class Vehicle:
                 return self._action_list[0]
             except Exception as e:
                 logger.write("Error! could not fetch an action:\n %s" % e)
-
         
     def perform_action(self, action):
         """
-        performs the action from the choose action function
+        The vehicle performs the action that is passed into this function. Deletes the next action in the action_list.
 
         Parameters
         ----------
@@ -84,19 +83,7 @@ class Vehicle:
         if(type(action) != str):
             logger.write("Error! Action must be of type string")
 
-    def update_action_list(self):
-        """
-        
-
-        Parameters
-        ----------
-            N/A
-
-        Returns
-        -------
-            N/A
-        """
-    def update_position(self):
+   
         """
         
 
@@ -111,7 +98,7 @@ class Vehicle:
     
     def get_x_pos(self):
         """
-        Gets the x_pos value
+        Returns the value of the x_pos class variable.
 
         Parameters
         ----------
@@ -133,7 +120,7 @@ class Vehicle:
 
     def set_x_pos(self, new_x_pos):
         """
-        Setter for x_pos.
+        Assigns x_pos variable the value of new_x_pos.
 
         Parameters
         ----------
@@ -155,7 +142,7 @@ class Vehicle:
     
     def get_y_pos(self):
         """
-        Gets the y_pos value
+        Returns the value of the y_pos class variable.
 
         Parameters
         ----------
@@ -177,7 +164,7 @@ class Vehicle:
 
     def set_y_pos(self, new_y_pos):
         """
-        Setter for y_pos.
+       Assigns y_pos variable the value of new_y_pos.
 
         Parameters
         ----------
@@ -199,7 +186,7 @@ class Vehicle:
 
     def get_wait_time(self):
         """
-        Gets the wait_time value
+        Returns the value of the wait_time class variable.
 
         Parameters
         ----------
@@ -221,7 +208,8 @@ class Vehicle:
     
     def reset_wait_time(self):
         """
-        Resets the wait_time to 0.0
+        Assigns the value of 0 to the wait_time variable. 
+        This should happen when a vehicle begins waiting in a queue. (leaves an intersection)
 
         Parameters
         ----------
@@ -234,4 +222,52 @@ class Vehicle:
         try:
             self._wait_time = 0.0
         except Exception as e:
-            logger.write("Error! Could not reset wait_time: \n %s" % e)
+            logger.write("Error! Could not reset wait_time: \n %s" % e)\
+    
+    def add_action(self, new_action):
+        """
+        This function appends the value of new_action to the class variable action_list.
+
+        Parameters
+        ----------
+            new_action : string
+
+        Returns
+        -------
+            N/A
+        """
+
+        if(type(new_action) != str):
+            logger.write("Error! action must be of type string")
+        elif(new_action == None):
+            logger.write("Error! action contains no value")
+        else:
+            try:
+                self._action_list.append(new_action)
+            except Exception as e:
+                logger.write("Error! could not add new_action to action_list:\n %s" % e)
+
+    def delete_action(self, action):
+        """
+        This function removes an element of the same value as action from the action_list class variable.
+        If there are no elements that match the value of action, then it throws an error.
+
+        Parameters
+        ----------
+            action : string
+
+        Returns
+        -------
+            N/A
+        """
+        if(type(action) != str):
+            logger.write("Error! action must be of type string")
+        elif(action == None):
+            logger.write("Error! action contains no value")
+        elif(len(self._action_list) == 0):
+            logger.write("Error! action_list is empty")
+        else:
+            try:
+                self._action_list.remove(action)
+            except Exception as e:
+                logger.write("Error! could not remove action from action_list:\n %s" % e)
