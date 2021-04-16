@@ -2,12 +2,12 @@ import logger
 
 __author__ = "Nathan Markle"
 __created__ = "04-06-2021"
-__editor__ = "Nathan Markle"
-__edited__ = "04-07-2021"
+__editor__ = "Nathan Markle, Blake Vogel"
+__edited__ = "04-16-2021"
 __rationale___ = "Initial Creation"
 __version__ = "0.0.1"
-__maintainer__ = "Nathan Markle"
-__email__ = "nmarkle@highpoint.edu"
+__maintainer__ = "Nathan Markle, Blake Vogel"
+__email__ = "nmarkle@highpoint.edu, bvogel@highpoint.edu"
 __status__ = "In development"
 
 class Traffic_Light:
@@ -42,6 +42,10 @@ class Traffic_Light:
             set_x_pos()                  : Setter for x_pos
             get_y_pos()                  : Getter for y_pos
             set_y_pos()                  : Setter for y_pos
+            get_interval()               : Getter for interval
+            set_interval()               : Setter for interval
+            check_interval()             : Checks to see the status of interval
+            change_light()               : Changes light 
         """
         self._blinking_arrow_status = None
         self._blinking_status = None
@@ -52,6 +56,7 @@ class Traffic_Light:
         self._red_status = None
         self._x_pos = None
         self._y_pos = None
+        self._interval = None
 
     def get_blinking_arrow_status(self):
         """
@@ -448,3 +453,98 @@ class Traffic_Light:
                 self._y_pos = new_y_pos
             except Exception as e:
                 logger.write("Error! Could not set the y_pos:\n %s" % e)
+    
+    def get_interval(self):
+        """
+        Getter for the interval
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            interval (int) : The interval of a Traffic Light
+        """
+        if(self._interval == None):
+            logger.write("Error! The interval contains no value.")
+        elif(type(self._interval) != int):
+            logger.write("Error! The y_pos must be of type int.")
+        else:
+            try:
+                return self._get_interval
+            except Exception as e:
+                logger.write("Error! Could not fetch the interval:\n %s" % e)
+
+    def set_interval(self, new_interval):
+        """
+        Setter for the interval
+
+        Parameters
+        ----------
+            new_interval (int) : The new value of the interval
+
+        Returns
+        -------
+            N/A
+        """
+        if(new_interval == None):
+            logger.write("Error! New interval cannot be NoneType.")
+        elif(type(new_y_pos) != int):
+            logger.write("Error! New interval must be of type int.")
+        else:
+            try:
+                self._interval = new_interval
+            except Exception as e:
+                logger.write("Error! Could not set the interval:\n %s" % e)
+
+    def check_interval():
+        """
+        Checks the status of intervals
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            N/A
+        """
+        if self.get_interval() > 0:
+            try:
+                self.set_interval(self.get_interval()-1)
+            except Exception as e:
+                logger.write("Error! failed ot set interval")
+        else:
+            try:
+                change_light()
+            except Exception as e:
+                logger.write("Error! failed to change light:\n %s" % e)
+    
+    def change_light():
+        """
+        Changes the light status
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            N/A
+        """
+        if self._green_status:
+            self.set_green_status(False)
+            self.set_yellow_status(True)
+            self.set_interval(3)
+            return
+        elif self._yellow_status:
+            self.set_yellow_status(False)
+            self.set_red_status(True)
+            self.set_interval(30)
+            return
+        elif self._red_status:
+            self.set_red_status(False)
+            self.set_green_status(True)
+            self.set_interval(30)
+            return
