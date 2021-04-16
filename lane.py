@@ -3,10 +3,10 @@ import vehicle
 
 __author__ = "Blake Vogel"
 __created__ = "04-09-2021"
-__editor__ = "Blake Vogel"
+__editor__ = "Blake Vogel, Nathan Markle"
 __edited__ = "04-16-2021"
-__rationale___ = "Initial Creation"
-__version__ = "0.0.1"
+__rationale___ = "Fixed errors"
+__version__ = "0.0.2"
 __maintainer__ = "Blake Vogel"
 __email__ = "bvogel@highpoint.edu"
 __status__ = "In development"
@@ -294,7 +294,7 @@ class Lane:
             except Exception as e:
                 logger.write("Error! Could not calculate total_lane_wait_time: \n %s" % e)
 
-    def enque(vehicle):
+    def enqueue(self, vehicle):
         """
         Adds a vehicle to the to the bottom of end_list
 
@@ -315,7 +315,7 @@ class Lane:
             except Exception as e:
                 logger.write("Error! Could not add vehicle to end_list:\n %s" % e)
     
-    def deque():
+    def dequeue(self):
         """
         Removes a vehicle from the top of the begin_list
 
