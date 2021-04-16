@@ -3,7 +3,7 @@ import logger
 __author__ = "Blake Vogel"
 __created__ = "04-09-2021"
 __editor__ = "Blake Vogel"
-__edited__ = "04-10-2021"
+__edited__ = "04-16-2021"
 __rationale___ = "Initial Creation"
 __version__ = "0.0.1"
 __maintainer__ = "Blake Vogel"
@@ -59,8 +59,6 @@ class Vehicle:
         """
         if(len(self._action_list) == 0):
             logger.write("Error! The action_list is empty")
-        elif(type(self._action_list) != str):
-            logger.write("Error! The action_list must be of type string")
         else:
             try:
                 return self._action_list[0]
@@ -69,7 +67,6 @@ class Vehicle:
         
     def perform_action(self, action):
         """
-        The vehicle performs the action that is passed into this function. Deletes the next action in the action_list.
 
         Parameters
         ----------
@@ -79,23 +76,8 @@ class Vehicle:
         -------
            N/A
         """
-
-        if(type(action) != str):
-            logger.write("Error! Action must be of type string")
-
-   
-        """
-        
-
-        Parameters
-        ----------
-            N/A
-
-        Returns
-        -------
-            N/A
-        """
-    
+        pass
+ 
     def get_x_pos(self):
         """
         Returns the value of the x_pos class variable.
