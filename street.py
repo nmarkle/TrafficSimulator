@@ -3,7 +3,7 @@ import logger
 __author__ = "Blake Vogel"
 __created__ = "04-10-2021"
 __editor__ = "Blake Vogel"
-__edited__ = "04-10-2021"
+__edited__ = "04-16-2021"
 __rationale___ = "Initial Creation"
 __version__ = "0.0.1"
 __maintainer__ = "Blake Vogel"
@@ -140,9 +140,7 @@ class Street:
         -------
             lane_list (string) : List of lanes
         """
-        if(type(self._lane_list) != str):
-            logger.write("Error! lane_list must be of type string")
-        elif(self._lane_list == None):
+        if(self._lane_list == None):
             logger.write("Error! lane_list contains no value")
         elif(len(self._lane_list) == 0):
             logger.write("Error! lane_list is empty")
@@ -164,10 +162,7 @@ class Street:
         -------
             N/A
         """
-
-        if(type(new_lane) != str):
-            logger.write("Error! new_lane must be of type string")
-        elif(new_lane == None):
+        if(new_lane == None):
             logger.write("Error! new_lane contains no value")
         else:
             try:
@@ -187,9 +182,8 @@ class Street:
         -------
             N/A
         """
-        if(type(lane) != str):
-            logger.write("Error! lane must be of type string")
-        elif(lane == None):
+        
+        if(lane == None):
             logger.write("Error! lane contains no value")
         elif(len(self._lane_list) == 0):
             logger.write("Error! lane_list is empty")
