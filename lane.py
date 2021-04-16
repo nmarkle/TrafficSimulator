@@ -1,9 +1,10 @@
 import logger
+import vehicle
 
 __author__ = "Blake Vogel"
 __created__ = "04-09-2021"
 __editor__ = "Blake Vogel"
-__edited__ = "04-10-2021"
+__edited__ = "04-16-2021"
 __rationale___ = "Initial Creation"
 __version__ = "0.0.1"
 __maintainer__ = "Blake Vogel"
@@ -29,24 +30,23 @@ class Lane:
             get_types_of_actions()          : Getter for types_of_actions
             add_types_of_actions()          : Setter for types_of_actions
             delete_types_of_actions()       : Delete types_of_actions
-            get_vehicle_list()              : Getter for vehicle_list
-            add_vehicle()                   : Add Vehicle to vehicle_list 
-            move_position_vehicle_list()    : Move the position of a Vehicle in vehicle_list
-            delete_vehicle_list()           : Delete Vehicle from vehicle_list
             get_max_vehicle_capacity()      : Getter for max_vehicle_capacity
             set_max_vehicle_capacity()      : Setter for max_vehicle_capacity
             get_total_lane_volume()         : Getter for total_lane_volume
             set_total_lane_volume()         : Setter for total_lane_volume
             get_total_lane_wait_time()      : Getter for total_lane_wait_time
             calculate_total_lane_wait_time(): Setter for total_lane_wait_time
+            enqueue()                       : Adds a vehicle to the bottom of end_list
+            dequeue()                       : Removes a vehicle from the top of begin_list 
         """
         
         self._length = None
         self._types_of_actions = []
-        self._vehicle_list = []
         self._max_vehicle_capacity = None
         self._total_lane_volume = None
         self._total_lane_wait_time = None
+        self._begin_list = []
+        self._end_list = []
     
     def get_length(self):
         """
@@ -104,9 +104,7 @@ class Lane:
         -------
             types_of_action (list of strings) : list of types of actions that a vehicle can make the lane
         """
-        if(type(self._types_of_actions) != str):
-            logger.write("Error! types_of_action must be of type string")
-        elif(self._types_of_actions == None):
+        if(self._types_of_actions == None):
             logger.write("Error! types_of_action contains no value")
         elif(len(types_of_actions) == 0):
             logger.write("Error! types_of_actions list is empty")
@@ -161,106 +159,6 @@ class Lane:
                 self._types_of_actions.remove(type_of_action)
             except Exception as e:
                 logger.write("Error! could not remove type_of_action from types_of_actions list:\n %s" % e)
-    
-    def get_vehicle_list(self):
-        """
-        Gets the list of vehicle_list vehicle objects
-
-        Parameters
-        ----------
-            N/A
-
-        Returns
-        -------
-            vehicle_list (list of string) : list of Vehicle objects
-        """
-        if(type(self._vehicle_list) != str):
-            logger.write("Error! vehicle_list must be of type string")
-        elif(self._vehicle_list == None):
-            logger.write("Error! vehicle_list contains no value")
-        elif(len(self._vehicle_list) == 0):
-            logger.write("Error! vehicle list is empty")
-        else:
-            try:
-                return self._vehicle_list
-            except Exception as e:
-                logger.write("Error! Could not fetch the vehicle_list: \n %s" % e)
-
-    def add_vehicle(self, new_vehicle):
-        """
-        Adds a new_vehicle to the list of vehicle_list.
-
-        Parameters
-        ----------
-            new_vehicle (string) : Vehicle object
-
-        Returns
-        -------
-            N/A
-        """
-        if(type(new_vehicle) != str):
-            logger.write("Error! new_vehicle must be of type string")
-        elif(new_vehicle == None):
-            logger.write("Error! new_vehicle contains no value")
-        else:
-            try:
-                self._vehicle_list.append(new_vehicle)
-            except Exception as e:
-                logger.write("Error! Could add new_vehicle to vehicle_list: \n %s" % e)
-    
-    def delete_vehicle(self, vehicle):
-        """
-        Delete vehicle from vehicle_list.
-
-        Parameters
-        ----------
-            vehicle : string
-
-        Returns
-        -------
-            N/A
-        """
-        if(type(vehicle) != str):
-            logger.write("Error! vehicle must be of type string")
-        elif(vehicle == None):
-            logger.write("Error! vehicle contains no value")
-        elif(len(self._vehicle_list) == 0):
-            logger.write("Error! vehicle_list list is empty")
-        else:
-            try:
-                self._vehicle_list.remove(vehicle)
-            except Exception as e:
-                logger.write("Error! could not remove vehicle from vehicle_list:\n %s" % e)
-
-    def move_position_vehicle_list(self, vehicle_to_be_moved, position_to_be_moved):
-        """
-        Move vehicle_to_be_moved to position_to_be_moved in vehicle_list.
-
-        Parameters
-        ----------
-            vehicle_to_be_moved : string
-            position_to_be_moved : int
-
-        Returns
-        -------
-            N/A
-        """
-
-        if(type(vehicle_to_be_moved) != str):
-            logger.write("Error! vehicle_to_be_moved must be of type string")
-        elif(type(position_to_be_moved) != int):
-            logger.write("Error! position_to_be_moved must be of type int")
-        elif(vehicle_to_be_moved == None):
-            logger.write("Error! vehicle_to_be_moved contains no value")
-        elif(position_to_be_moved == None):
-            logger.write("Error! position_to_be_moved contains no value")
-        elif(len(self._vehicle_list) == 0):
-            logger.write("Error! vehicle_list is empty")
-        else:
-            try:
-                self._vehicle_list[position_to_be_moved] = vehicle_to_be_moved
-            except Exception as e:
-                logger.write("Error! could not move vehicle_to_be_moved to position_to_be_moved:\n %s" % e)
     
     def get_max_vehicle_capacity(self):
         """
@@ -385,16 +283,55 @@ class Lane:
             N/A
         """
 
-        if(type(self._vehicle_list) != str):
-            logger.write("Error! vehicle_list must be of type string")
-        elif(self._vehicle_list == None):
+        if(self._begin_list == None):
             logger.write("Error! vehicle_list contains no value")
-        elif(len(self._vehicle_list) == 0):
+        elif(len(self._begin_list) == 0):
             logger.write("Error! vehicle_list is empty")
         else:
             try:
-                for v in self._vehicle_list:
+                for v in self._begin_list:
                     self._total_lane_wait_time += v._wait_time
             except Exception as e:
                 logger.write("Error! Could not calculate total_lane_wait_time: \n %s" % e)
 
+    def enque(vehicle):
+        """
+        Adds a vehicle to the to the bottom of end_list
+
+        Parameters
+        ----------
+            vehicle (Vehicle Object) : vehicle to be added to end_list
+
+        Returns
+        -------
+            N/A
+        """
+
+        if(vehicle == None):
+            logger.write("Error! vehicle cannot be a NoneType")
+        else:
+            try:
+                self._end_list.append(vehicle)
+            except Exception as e:
+                logger.write("Error! Could not add vehicle to end_list:\n %s" % e)
+    
+    def deque():
+        """
+        Removes a vehicle from the top of the begin_list
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            vehicle (Vehicle Object) : a vehicle that is being removed from a lane
+        """
+
+        if(len(self._begin_list) == 0):
+            logger.write("Error! begin_list is empty")
+        else:
+            try:
+                return self._begin_list.pop(0)
+            except Exception as e:
+                logger.write("Error! failed to pop the top vehicle off begin_list")
