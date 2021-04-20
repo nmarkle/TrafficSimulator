@@ -39,6 +39,9 @@ class Street:
         self._lane_list = None
         self._average_street_wait_time = None
         self._average_street_volume = None
+        self._begin_lanes = []
+        self._end_lanes = []
+        
 
     def get_name(self):
         """
