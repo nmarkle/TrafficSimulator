@@ -1,4 +1,14 @@
-import logger, traffic_light, street
+__author__ = "Blake Vogel"
+__created__ = "04-20-2021"
+__editor__ = "Blake Vogel"
+__edited__ = "04-20-2021"
+__rationale___ = "Created"
+__version__ = "0.0.1"
+__maintainer__ = "Blake Vogel"
+__email__ = "bvogel@highpoint.edu"
+__status__ = "In development"
+
+import logger, street, lane, vehicle
 
 class Intersection():
     def __init__(self):
@@ -23,6 +33,10 @@ class Intersection():
             calculate_average_wait_time() : Calculates the average wait time for the intersection based off the
                                             average wait time of every street.
             calculate_traffic_volume()    : Calculates the traffic volume based off the volumes of every street
+            left()                        : Have a vehicle make a left turn
+            straight()                    : Have a vehicle go straight
+            right()                       : Have a vehicle make a right turn
+            move_vehicle()                : Move a vehicle from one lane to another
         """
         self._street_list = []
         self._traffic_light_list = []
@@ -198,3 +212,82 @@ class Intersection():
             for street in self._street_list:
                 sum += street.calculate_street_volume()
             self._total_traffic_volume = sum
+    
+    def left(self, street_index):
+        """
+        Move a vehicle to take a left turn at an intersection
+
+        Parameters
+        ----------
+            street_index
+        Returns
+        -------
+            N/A
+        """
+        left_lane_index = self._street_list[street_index].end_lane
+        if street_index == 0:
+            street_to_be_moved = len(self._street_list)-1
+        else:
+            street_to_be_moved = street_index - 1 
+        self._street_list[street_index]._lane_list[left_lane_index].move_vehicle(street_index, left_lane_index, street_to_be_moved, self._street_list[street_index]._lane_list[street_to_be_moved].end_lane-1)
+
+    def straight(self, street_index, lane_index):
+        """
+        Moves a vehicle straight through an intersection 
+
+        Parameters
+        ----------
+            street_index
+            lane_index
+
+        Returns
+        -------
+            N/A
+        """
+        street_index - len(lane_list) -1
+        if street_index <= 1:
+            destination_street = street_index+2
+            
+        else:
+            destination_street = street_index-2
+        straight_lane_recipient = len(self._street_list[destination_street]) - (street_index + 1)
+        self._street_list[street_index]._lane_list[straight_lane_recipient].move_vehicle(street_index, lane_index, destination_lane, straight_lane_recipient)
+    
+    def right(self, street_index):
+        """
+        Moves a vehicle to take a right turn
+
+        Parameters
+        ----------
+            street_index
+
+        Returns
+        -------
+            N/A
+        """
+        right_lane_index = len(self._street_list[street_index]._lane_list)-1
+        if street_index == len(self._street_list)-1:
+            street_to_be_moved = 0
+        else:
+            street_to_be_moved = street_index + 1
+        self._street_list[street_index]._lane_list[right_lane_index].move_vehicle(street_index, right_lane_index, street_to_be_moved, 0) 
+
+
+    
+    def move_vehicle(self, origin_street, origin_lane, destination_street, destination_lane):
+        """
+        Move a vehicle from one lane to another 
+
+        Parameters
+        ----------
+            origin_street
+            origin_lane
+            destination_street
+            destination_lane
+
+        Returns
+        -------
+            N/A
+        """
+        v = self._street_list[origin_street]._lane_list[origin_lane].dequeue()
+        self._street_list[destination_street]._lane_list[destination_lane].enqueue(v)
