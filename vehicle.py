@@ -1,4 +1,4 @@
-import logger
+from logger import Logger
 
 __author__ = "Blake Vogel"
 __created__ = "04-09-2021"
@@ -44,6 +44,7 @@ class Vehicle:
         self._action_list = []
         self._wait_time = None
         self._time_entered_queue = None
+        self._logger = logger.Logger()
     
     def choose_action(self):
         """
@@ -58,12 +59,12 @@ class Vehicle:
             action (string) : an action that a vehicle will make
         """
         if(len(self._action_list) == 0):
-            logger.write("Error! The action_list is empty")
+            self._logger.write("Error! The action_list is empty")
         else:
             try:
                 return self._action_list[0]
             except Exception as e:
-                logger.write("Error! could not fetch an action:\n %s" % e)
+                self._logger.write("Error! could not fetch an action:\n %s" % e)
         
     def perform_action(self, action):
         """
@@ -91,14 +92,14 @@ class Vehicle:
             x_pos (float) : the x position of the vehicle 
         """
         if(type(self._x_pos) != float):
-            logger.write("Error! x_pos must be of type float")
+            self._logger.write("Error! x_pos must be of type float")
         elif(self._x_pos == None):
-            logger.write("Error! x_pos contains no value")
+            self._logger.write("Error! x_pos contains no value")
         else:
             try:
                 return self._x_pos
             except Exception as e:
-                logger.write("Error! Could not fetch the x_pos: \n %s" % e)
+                self._logger.write("Error! Could not fetch the x_pos: \n %s" % e)
 
     def set_x_pos(self, new_x_pos):
         """
@@ -113,14 +114,14 @@ class Vehicle:
             N/A
         """
         if(new_x_pos == None):
-            logger.write("Error! new_x_pos cannot be a NoneType")
+            self._logger.write("Error! new_x_pos cannot be a NoneType")
         elif(type(new_x_pos) != float):
-            logger.write("Error! new_x_pos must be of type float")
+            self._logger.write("Error! new_x_pos must be of type float")
         else:
             try:
                 self._x_pos = new_x_pos
             except Exception as e:
-                logger.write("Error! Could not set the new x_pos:\n %s" % e)
+                self._logger.write("Error! Could not set the new x_pos:\n %s" % e)
     
     def get_y_pos(self):
         """
@@ -135,14 +136,14 @@ class Vehicle:
             y_pos (float) : the x position of the vehicle 
         """
         if(type(self._y_pos) != float):
-            logger.write("Error! y_pos must be of type float")
+            self._logger.write("Error! y_pos must be of type float")
         elif(self._y_pos == None):
-            logger.write("Error! y_pos contains no value")
+            self._logger.write("Error! y_pos contains no value")
         else:
             try:
                 return self._y_pos
             except Exception as e:
-                logger.write("Error! Could not fetch the y_pos: \n %s" % e)
+                self._logger.write("Error! Could not fetch the y_pos: \n %s" % e)
 
     def set_y_pos(self, new_y_pos):
         """
@@ -157,14 +158,14 @@ class Vehicle:
             N/A
         """
         if(new_y_pos == None):
-            logger.write("Error! new_y_pos cannot be a NoneType")
+            self._logger.write("Error! new_y_pos cannot be a NoneType")
         elif(type(new_y_pos) != float):
-            logger.write("Error! new_y_pos must be of type float")
+            self._logger.write("Error! new_y_pos must be of type float")
         else:
             try:
                 self._y_pos = new_y_pos
             except Exception as e:
-                logger.write("Error! Could not set the new y_pos:\n %s" % e)
+                self._logger.write("Error! Could not set the new y_pos:\n %s" % e)
 
     def get_wait_time(self):
         """
@@ -179,14 +180,14 @@ class Vehicle:
             wait_time (float) : the wait time of the vehicle at an intersection
         """
         if(self._wait_time == None):
-            logger.write("Error! wait_time contains no value")
+            self._logger.write("Error! wait_time contains no value")
         elif(type(self._wait_time) != float):
-            logger.write("Error! wait_time must be type float")
+            self._logger.write("Error! wait_time must be type float")
         else:
             try:
                 return self._wait_time
             except Exception as e:
-                logger.write("Error! Could not fetch the wait_time:\n %s" % e)
+                self._logger.write("Error! Could not fetch the wait_time:\n %s" % e)
     
     def reset_wait_time(self):
         """
@@ -204,7 +205,7 @@ class Vehicle:
         try:
             self._wait_time = 0.0
         except Exception as e:
-            logger.write("Error! Could not reset wait_time: \n %s" % e)\
+            self._logger.write("Error! Could not reset wait_time: \n %s" % e)\
     
     def add_action(self, new_action):
         """
@@ -220,14 +221,14 @@ class Vehicle:
         """
 
         if(type(new_action) != str):
-            logger.write("Error! action must be of type string")
+            self._logger.write("Error! action must be of type string")
         elif(new_action == None):
-            logger.write("Error! action contains no value")
+            self._logger.write("Error! action contains no value")
         else:
             try:
                 self._action_list.append(new_action)
             except Exception as e:
-                logger.write("Error! could not add new_action to action_list:\n %s" % e)
+                self._logger.write("Error! could not add new_action to action_list:\n %s" % e)
 
     def delete_action(self, action):
         """
@@ -243,13 +244,13 @@ class Vehicle:
             N/A
         """
         if(type(action) != str):
-            logger.write("Error! action must be of type string")
+            self._logger.write("Error! action must be of type string")
         elif(action == None):
-            logger.write("Error! action contains no value")
+            self._logger.write("Error! action contains no value")
         elif(len(self._action_list) == 0):
-            logger.write("Error! action_list is empty")
+            self._logger.write("Error! action_list is empty")
         else:
             try:
                 self._action_list.remove(action)
             except Exception as e:
-                logger.write("Error! could not remove action from action_list:\n %s" % e)
+                self._logger.write("Error! could not remove action from action_list:\n %s" % e)

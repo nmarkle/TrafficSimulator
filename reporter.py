@@ -1,4 +1,5 @@
-import logger, os
+import os
+from logger import Logger
 
 __author__ = "Vincent Fazio"
 __created__ = "04-12-2021"
@@ -49,6 +50,7 @@ class Reporter:
         self._report_file_size = None
         self._viewing_report_state = None
         self._file_opened = None
+        self._logger = logger.Logger()
     
     def generate_report(self):
     
@@ -72,7 +74,7 @@ class Reporter:
             try:
                 return self._file_opened
             except Exception as e:
-                logger.write("Error! Failed to open report file:\n %s" % e)
+                self._logger.write("Error! Failed to open report file:\n %s" % e)
 
     
     def close_report_file(self):
@@ -95,9 +97,9 @@ class Reporter:
                 f.close() #need to pass in file object to close it here
                 return True
             except Exception as e:
-                logger.write("Error! Failed to close report file:\n %s" % e)
+                self._logger.write("Error! Failed to close report file:\n %s" % e)
         else:
-            logger.write("Report file was not open close")
+            self._logger.write("Report file was not open close")
             return False
 
     def set_file_path(self, new_file_path):
@@ -113,14 +115,14 @@ class Reporter:
             N/A
         """
         if(new_file_path == None):
-            logger.write("Error! new_file_path cannot be a NoneType")
+            self._logger.write("Error! new_file_path cannot be a NoneType")
         elif(type(new_file_path) != string):
-            logger.write("Error! A string value representing the file path should be provided")
+            self._logger.write("Error! A string value representing the file path should be provided")
         else:
             try:
                 self._report_file_path = new_file_path
             except Exception as e:
-                logger.write("Error! Failed to set the report_file_path:\n %s" % e)
+                self._logger.write("Error! Failed to set the report_file_path:\n %s" % e)
 
     def get_file_path(self):
         """
@@ -135,11 +137,11 @@ class Reporter:
             report_file_path (boolean) : Class variable to store the state of 'report_file_path'
         """
         if(type(self._report_file_path) != str):
-            logger.write("Error! File path name is not assigned")
+            self._logger.write("Error! File path name is not assigned")
         elif(self._report_file_path == None):
-            logger.write("Error! name contains no value")
+            self._logger.write("Error! name contains no value")
         else:
             try:
                 return self._report_file_path
             except Exception as e:
-                logger.write("Error! Failed to fetch the value of report_file_path: \n %s" % e)
+                self._logger.write("Error! Failed to fetch the value of report_file_path: \n %s" % e)

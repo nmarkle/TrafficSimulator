@@ -8,7 +8,10 @@ __maintainer__ = "Blake Vogel"
 __email__ = "bvogel@highpoint.edu"
 __status__ = "In development"
 
-import logger, street, lane, vehicle
+from vehicle import Vehicle
+from lane import Lane
+from logger import Logger
+from street import Street
 
 class Intersection():
     def __init__(self):
@@ -18,9 +21,12 @@ class Intersection():
         for all of it's inherent class variables and methods to calculate relevant 
         metrics.
 
-        Parameters
+        Attributes
         ----------
-            N/A
+            street_list (list of Street objects) : List to hold all the Streets of an Intersection
+            average_wait_time = None
+            total_traffic_volume = None
+            logger = logger.Logger()
 
         Methods
         -------
@@ -37,11 +43,12 @@ class Intersection():
             straight()                    : Have a vehicle go straight
             right()                       : Have a vehicle make a right turn
             move_vehicle()                : Move a vehicle from one lane to another
+            logger()                      : Logger object for error handling
         """
         self._street_list = []
-        self._traffic_light_list = []
         self._average_wait_time = None
         self._total_traffic_volume = None
+        self._logger = logger.Logger()
 
     def add_street(self, new_street):
         """
@@ -56,14 +63,14 @@ class Intersection():
             N/A
         """
         if(new_street == None):
-            logger.write("Error! New Street cannot be a NoneType.")
+            self._logger.write("Error! New Street cannot be a NoneType.")
         elif(type(new_street) != street.Street):
-            logger.write("Error! New Street must be of type Street.")
+            self._logger.write("Error! New Street must be of type Street.")
         else:
             try:
                 self._street_list.append(new_street)
             except Exception as e:
-                logger.write("Error! Could not add the new Street object to list:\n %s" % e)
+                self._logger.write("Error! Could not add the new Street object to list:\n %s" % e)
     
     def get_street_list(self):
         """
@@ -78,12 +85,12 @@ class Intersection():
             street_list (list of Street objects) : The list representing the streets of the intersection
         """
         if(len(self._street_list) == 0):
-            logger.write("Error! Street list is empty.")
+            self._logger.write("Error! Street list is empty.")
         else:
             try:
                 return self._street_list
             except Exception as e:
-                logger.write("Error! Unable to return the street list:\n %s" % e)
+                self._logger.write("Error! Unable to return the street list:\n %s" % e)
 
     def delete_street(self, street):
         """
@@ -98,14 +105,14 @@ class Intersection():
             N/A
         """
         if(street == None):
-            logger.write("Error! Street to remove cannot be NoneType.")
+            self._logger.write("Error! Street to remove cannot be NoneType.")
         elif(type(street) != street.Street):
-            logger.write("Error! Cannot remove non-Street type from list.")
+            self._logger.write("Error! Cannot remove non-Street type from list.")
         else:
             try:
                 self._street_list.remove(street)
             except Exception as e:
-                logger.write("Error! Could not remove street from list:\n %s" % e)
+                self._logger.write("Error! Could not remove street from list:\n %s" % e)
 
     def get_traffic_light_list(self):
         """
@@ -120,12 +127,12 @@ class Intersection():
             traffic_light_list (list of Traffic_Light objects) : The list representing the traffic lights of the intersection
         """
         if(len(self._traffic_light_list) == 0):
-            logger.write("Error! Traffic light list is empty.")
+            self._logger.write("Error! Traffic light list is empty.")
         else:
             try:
                 return self._traffic_light_list
             except Exception as e:
-                logger.write("Error! Unable to return the traffic light list:\n %s" % e)
+                self._logger.write("Error! Unable to return the traffic light list:\n %s" % e)
 
     def add_traffic_light(self, new_traffic_light):
         """
@@ -140,14 +147,14 @@ class Intersection():
             N/A
         """
         if(new_traffic_light == None):
-            logger.write("Error! New traffic light cannot be NoneType.")
+            self._logger.write("Error! New traffic light cannot be NoneType.")
         elif(type(new_traffic_light) != traffic_light.Traffic_Light):
-            logger.write("Error! New traffic light must be of type Traffic_Light.")
+            self._logger.write("Error! New traffic light must be of type Traffic_Light.")
         else:
             try:
                 self._traffic_light_list.append(new_traffic_light)
             except Exception as e:
-                logger.write("Error! Unable to add traffic light to traffic light list:\n %s" % e)
+                self._logger.write("Error! Unable to add traffic light to traffic light list:\n %s" % e)
 
     def delete_traffic_light(self, traffic_light):
         """
@@ -162,14 +169,14 @@ class Intersection():
             N/A
         """
         if(traffic_light == None):
-            logger.write("Error! New traffic light cannot be NoneType.")
+            self._logger.write("Error! New traffic light cannot be NoneType.")
         elif(type(traffic_light) != traffic_light.Traffic_Light):
-            logger.write("Error! New traffic light must be of type Traffic_Light.")
+            self._logger.write("Error! New traffic light must be of type Traffic_Light.")
         else:
             try:
                 self._traffic_light_list.remove(traffic_light)
             except Exception as e:
-                logger.write("Error! Could not remove traffic light from list:\n %s" % e)
+                self._logger.write("Error! Could not remove traffic light from list:\n %s" % e)
 
     def calculate_average_wait_time(self):
         """
@@ -186,7 +193,7 @@ class Intersection():
         sum = 0
         total_streets = len(self._street_list)
         if(total_streets == 0):
-            logger.write("Error! Cannot calculate average wait time of an intersection with no streets.")
+            self._logger.write("Error! Cannot calculate average wait time of an intersection with no streets.")
         else:
             for street in self._street_list:
                 sum += street.calculate_street_wait_time()
@@ -207,7 +214,7 @@ class Intersection():
         sum = 0
         total_streets = len(self._street_list)
         if(total_streets == 0):
-            logger.write("Error! Cannot calculate traffic volume for an intersection with no streets.")
+            self._logger.write("Error! Cannot calculate traffic volume for an intersection with no streets.")
         else:
             for street in self._street_list:
                 sum += street.calculate_street_volume()

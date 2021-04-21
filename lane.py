@@ -1,5 +1,5 @@
-import logger
-import vehicle
+from logger import Logger
+from vehicle import Vehicle
 
 __author__ = "Blake Vogel"
 __created__ = "04-09-2021"
@@ -19,9 +19,14 @@ class Lane:
         object will possess getters and setters for all of it’s
         inherent class variables.
 
-        Parameters
+        Attributes
         ----------
-            N/A
+            length (int)                    : Length of the lane
+            types_of_actions (list of str)  : List of valid actions for the lane
+            max_vehicle_capacity (int)      : Max number of vehicles per lane
+            total_lane_volume (int)         : Metric for the number of cars that passed through the lane
+            total_lane_wait_time (float)    : Metric for the amount of time each car waited in the lane
+            vehicle_list (list of Vehicle)  : The Vehicles present in this lane
 
         Methods
         -------
@@ -37,7 +42,11 @@ class Lane:
             get_total_lane_wait_time()      : Getter for total_lane_wait_time
             calculate_total_lane_wait_time(): Setter for total_lane_wait_time
             enqueue()                       : Adds a vehicle to the bottom of end_list
-            dequeue()                       : Removes a vehicle from the top of begin_list 
+            dequeue()                       : Removes a vehicle from the top of vehicle_list 
+
+            get_light_status()              : Getter for light_status
+            set_light_status()              : Setter for light_status
+            change_light()                  : Inverses the current boolean status
         """
         
         self._length = None
@@ -45,8 +54,10 @@ class Lane:
         self._max_vehicle_capacity = None
         self._total_lane_volume = None
         self._total_lane_wait_time = None
-        self._begin_list = []
-        self._end_list = []
+        self._vehicle_list = []
+        self._light_status = None
+        self._logger = logger.Logger()
+        
     
     def get_length(self):
         """
@@ -61,14 +72,14 @@ class Lane:
             length (float) : the length of a lane
         """
         if(type(self._length) != float):
-            logger.write("Error! length must be of type float")
+            self._logger.write("Error! length must be of type float")
         elif(self._length == None):
-            logger.write("Error! length contains no value")
+            self._logger.write("Error! length contains no value")
         else:
             try:
                 return self._length
             except Exception as e:
-                logger.write("Error! Could not fetch the value of length: \n %s" % e)
+                self._logger.write("Error! Could not fetch the value of length: \n %s" % e)
     
     def set_length(self, new_length):
         """
@@ -83,14 +94,14 @@ class Lane:
             N/A
         """
         if(new_length == None):
-            logger.write("Error! new_length cannot be a NoneType")
+            self._logger.write("Error! new_length cannot be a NoneType")
         elif(type(new_length) != float):
-            logger.write("Error! new_length must be of type float")
+            self._logger.write("Error! new_length must be of type float")
         else:
             try:
                 self._length = new_length
             except Exception as e:
-                logger.write("Error! Could not set the new length:\n %s" % e)
+                self._logger.write("Error! Could not set the new length:\n %s" % e)
     
     def get_types_of_actions(self):
         """
@@ -105,14 +116,14 @@ class Lane:
             types_of_action (list of strings) : list of types of actions that a vehicle can make the lane
         """
         if(self._types_of_actions == None):
-            logger.write("Error! types_of_action contains no value")
+            self._logger.write("Error! types_of_action contains no value")
         elif(len(types_of_actions) == 0):
-            logger.write("Error! types_of_actions list is empty")
+            self._logger.write("Error! types_of_actions list is empty")
         else:
             try:
                 return self._types_of_actions
             except Exception as e:
-                logger.write("Error! Could not fetch the list of types_of_actions: \n %s" % e)
+                self._logger.write("Error! Could not fetch the list of types_of_actions: \n %s" % e)
     
     def add_types_of_actions(self, new_type_of_action):
         """
@@ -127,14 +138,14 @@ class Lane:
             N/A
         """
         if(new_type_of_action == None):
-            logger.write("Error! new_type_of_action cannot be a NoneType")
+            self._logger.write("Error! new_type_of_action cannot be a NoneType")
         elif(type(new_type_of_action) != str):
-            logger.write("Error! new_type_of_action must be of type string")
+            self._logger.write("Error! new_type_of_action must be of type string")
         else:
             try:
                 self._types_of_actions.append(new_type_of_action)
             except Exception as e:
-                logger.write("Error! Could not add a new type of action to the types_of_actions list:\n %s" % e)
+                self._logger.write("Error! Could not add a new type of action to the types_of_actions list:\n %s" % e)
     
     def delete_action(self, type_of_action):
         """
@@ -149,16 +160,16 @@ class Lane:
             N/A
         """
         if(type(type_of_action) != str):
-            logger.write("Error! type_of_action must be of type string")
+            self._logger.write("Error! type_of_action must be of type string")
         elif(type_of_action == None):
-            logger.write("Error! type_of_action contains no value")
+            self._logger.write("Error! type_of_action contains no value")
         elif(len(self._types_of_actions) == 0):
-            logger.write("Error! types_of_actions list is empty")
+            self._logger.write("Error! types_of_actions list is empty")
         else:
             try:
                 self._types_of_actions.remove(type_of_action)
             except Exception as e:
-                logger.write("Error! could not remove type_of_action from types_of_actions list:\n %s" % e)
+                self._logger.write("Error! could not remove type_of_action from types_of_actions list:\n %s" % e)
     
     def get_max_vehicle_capacity(self):
         """
@@ -173,14 +184,14 @@ class Lane:
             max_vehicle_capacity (int) : the maximum number of vehicle allowed in a lane
         """
         if(type(self._max_vehicle_capacity) != int):
-            logger.write("Error! max_vehicle_capacity must be of type int")
+            self._logger.write("Error! max_vehicle_capacity must be of type int")
         elif(self._max_vehicle_capacity == None):
-            logger.write("Error! max_vehicle_capacity contains no value")
+            self._logger.write("Error! max_vehicle_capacity contains no value")
         else:
             try:
                 return self._max_vehicle_capacity
             except Exception as e:
-                logger.write("Error! Could not fetch the value of max_vehicle_capacity: \n %s" % e)
+                self._logger.write("Error! Could not fetch the value of max_vehicle_capacity: \n %s" % e)
 
     def set_max_vehicle_capacity(self, new_max_vehicle):
         """
@@ -195,14 +206,14 @@ class Lane:
             N/A
         """
         if(new_max_vehicle == None):
-            logger.write("Error! new_max_vehicle cannot be a NoneType")
+            self._logger.write("Error! new_max_vehicle cannot be a NoneType")
         elif(type(new_max_vehicle) != int):
-            logger.write("Error! new_max_vehicle must be of type int")
+            self._logger.write("Error! new_max_vehicle must be of type int")
         else:
             try:
                 self._max_vehicle_capacity = new_max_vehicle
             except Exception as e:
-                logger.write("Error! Could not set the new max_vehicle:\n %s" % e)
+                self._logger.write("Error! Could not set the new max_vehicle:\n %s" % e)
 
     def get_total_lane_volume(self):
         """
@@ -217,14 +228,14 @@ class Lane:
             total_lane_volume (int) : the total number of lanes
         """
         if(type(self._total_lane_volume) != int):
-            logger.write("Error! total_lane_volume must be of type int")
+            self._logger.write("Error! total_lane_volume must be of type int")
         elif(self._total_lane_volume == None):
-            logger.write("Error! total_lane_volume contains no value")
+            self._logger.write("Error! total_lane_volume contains no value")
         else:
             try:
                 return self._total_lane_volume
             except Exception as e:
-                logger.write("Error! Could not fetch the value of total_lane_volume: \n %s" % e)
+                self._logger.write("Error! Could not fetch the value of total_lane_volume: \n %s" % e)
                 
     def set_total_lane_volume(self, new_total_lane_volume):
         """
@@ -239,14 +250,14 @@ class Lane:
             N/A
         """
         if(new_total_lane_volume == None):
-            logger.write("Error! new_total_lane_volume cannot be a NoneType")
+            self._logger.write("Error! new_total_lane_volume cannot be a NoneType")
         elif(type(new_total_lane_volume) != int):
-            logger.write("Error! new_total_lane_volume must be of type int")
+            self._logger.write("Error! new_total_lane_volume must be of type int")
         else:
             try:
                 self._total_lane_volume = new_total_lane_volume
             except Exception as e:
-                logger.write("Error! Could not set the new total_lane_volume:\n %s" % e)
+                self._logger.write("Error! Could not set the new total_lane_volume:\n %s" % e)
     
     def get_total_lane_wait_time(self):
         """
@@ -261,14 +272,14 @@ class Lane:
             total_lane_wait_time (float) : the total lane wait time
         """
         if(type(self._total_lane_wait_time) != float):
-            logger.write("Error! total_lane_volume must be of type int")
+            self._logger.write("Error! total_lane_volume must be of type int")
         elif(self._total_lane_wait_time == None):
-            logger.write("Error! total_lane_wait_time contains no value")
+            self._logger.write("Error! total_lane_wait_time contains no value")
         else:
             try:
                 return self._total_lane_wait_time
             except Exception as e:
-                logger.write("Error! Could not fetch the value of total_lane_wait_time: \n %s" % e)
+                self._logger.write("Error! Could not fetch the value of total_lane_wait_time: \n %s" % e)
 
     def calculate_total_lane_wait_time(self):
         """
@@ -283,16 +294,16 @@ class Lane:
             N/A
         """
 
-        if(self._begin_list == None):
-            logger.write("Error! vehicle_list contains no value")
-        elif(len(self._begin_list) == 0):
-            logger.write("Error! vehicle_list is empty")
+        if(self._vehicle_list == None):
+            self._logger.write("Error! vehicle_list contains no value")
+        elif(len(self._vehicle_list) == 0):
+            self._logger.write("Error! vehicle_list is empty")
         else:
             try:
-                for v in self._begin_list:
+                for v in self._vehicle_list:
                     self._total_lane_wait_time += v._wait_time
             except Exception as e:
-                logger.write("Error! Could not calculate total_lane_wait_time: \n %s" % e)
+                self._logger.write("Error! Could not calculate total_lane_wait_time: \n %s" % e)
 
     def enqueue(self, vehicle):
         """
@@ -308,16 +319,16 @@ class Lane:
         """
 
         if(vehicle == None):
-            logger.write("Error! vehicle cannot be a NoneType")
+            self._logger.write("Error! vehicle cannot be a NoneType")
         else:
             try:
                 self._end_list.append(vehicle)
             except Exception as e:
-                logger.write("Error! Could not add vehicle to end_list:\n %s" % e)
+                self._logger.write("Error! Could not add vehicle to end_list:\n %s" % e)
     
     def dequeue(self):
         """
-        Removes a vehicle from the top of the begin_list
+        Removes a vehicle from the top of the vehicle_list
 
         Parameters
         ----------
@@ -328,10 +339,51 @@ class Lane:
             vehicle (Vehicle Object) : a vehicle that is being removed from a lane
         """
 
-        if(len(self._begin_list) == 0):
-            logger.write("Error! begin_list is empty")
+        if(len(self._vehicle_list) == 0):
+            self._logger.write("Error! Vehicle list is empty")
         else:
             try:
-                return self._begin_list.pop(0)
+                return self._vehicle_list.pop(0)
             except Exception as e:
-                logger.write("Error! failed to pop the top vehicle off begin_list")
+                self._logger.write("Error! failed to pop the top vehicle off vehicle list")
+
+    def get_light_status(self):
+        """
+        Return the status of light_status
+        
+        Parameters
+        ----------
+            N/A
+        Returns
+        -------
+            light_status : boolean
+        """
+        return self._light_status
+    
+    def set_light_status(self, new_light_status):
+        """
+        Setter for the light_status
+
+        Parameters
+        ----------
+            new_light_status (bool) : The new status for the light
+        
+        Returns
+        -------
+            N/A
+        """
+        self.__light_status = new_light_status
+   
+    def change_light(self):
+        """
+        Changes the status of the light
+
+        Parameters
+        ----------
+            N/A
+        Returns
+        -------
+            N/A
+        """
+        self._light_status = not self._light_status
+    

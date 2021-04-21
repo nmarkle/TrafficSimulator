@@ -1,4 +1,5 @@
-import logger
+from logger import Logger
+from lane import Lane
 
 __author__ = "Blake Vogel"
 __created__ = "04-10-2021"
@@ -31,7 +32,8 @@ class Street:
             delete_lane()                   : Delete lane from lane_list
             calculate_street_wait_time()    : Street wait_time for all lanes 
             calculate_street_volume()       : Street volume for all lanes
-
+            add_begin_lane                  : Adds begin_lane to begin_lanes
+            add_end_lane                    : Adds end_lane to end_lanes
         """
         
         self._name = None
@@ -41,6 +43,7 @@ class Street:
         self._average_street_volume = None
         self._begin_lanes = []
         self._end_lanes = []
+        self._logger = logger.Logger()
         
 
     def get_name(self):
@@ -56,14 +59,14 @@ class Street:
             name (string) : the name of street
         """
         if(type(self._name) != str):
-            logger.write("Error! name must be of type string")
+            self._logger.write("Error! name must be of type string")
         elif(self._name == None):
-            logger.write("Error! name contains no value")
+            self._logger.write("Error! name contains no value")
         else:
             try:
                 return self._name
             except Exception as e:
-                logger.write("Error! Could not fetch the value of name: \n %s" % e)
+                self._logger.write("Error! Could not fetch the value of name: \n %s" % e)
     
     def set_name(self, new_name):
         """
@@ -78,14 +81,14 @@ class Street:
             N/A
         """
         if(new_name == None):
-            logger.write("Error! new_name cannot be a NoneType")
+            self._logger.write("Error! new_name cannot be a NoneType")
         elif(type(new_name) != str):
-            logger.write("Error! new_name must be of type string")
+            self._logger.write("Error! new_name must be of type string")
         else:
             try:
                 self._name = new_name
             except Exception as e:
-                logger.write("Error! Could not set the new name:\n %s" % e)
+                self._logger.write("Error! Could not set the new name:\n %s" % e)
 
     def get_orientation(self):
         """
@@ -100,14 +103,14 @@ class Street:
             orientation (string) : The orientation of the street
         """
         if(type(self._orientation) != str):
-            logger.write("Error! orientation must be of type string")
+            self._logger.write("Error! orientation must be of type string")
         elif(self._orientation == None):
-            logger.write("Error! orientation contains no value")
+            self._logger.write("Error! orientation contains no value")
         else:
             try:
                 return self._orientation
             except Exception as e:
-                logger.write("Error! Could not fetch the value of orientation: \n %s" % e)
+                self._logger.write("Error! Could not fetch the value of orientation: \n %s" % e)
     
     def set_orientation(self, new_orientation):
         """
@@ -122,14 +125,14 @@ class Street:
             N/A
         """
         if(new_orientation == None):
-            logger.write("Error! new_orientation cannot be a NoneType")
+            self._logger.write("Error! new_orientation cannot be a NoneType")
         elif(type(new_orientation) != str):
-            logger.write("Error! new_orientation must be of type string")
+            self._logger.write("Error! new_orientation must be of type string")
         else:
             try:
                 self._orientation = new_orientation
             except Exception as e:
-                logger.write("Error! Could not set the new orientation:\n %s" % e)
+                self._logger.write("Error! Could not set the new orientation:\n %s" % e)
 
     def get_lane_list(self):
         """
@@ -144,38 +147,58 @@ class Street:
             lane_list (string) : List of lanes
         """
         if(self._lane_list == None):
-            logger.write("Error! lane_list contains no value")
+            self._logger.write("Error! lane_list contains no value")
         elif(len(self._lane_list) == 0):
-            logger.write("Error! lane_list is empty")
+            self._logger.write("Error! lane_list is empty")
         else:
             try:
                 return self._lane_list
             except Exception as e:
-                logger.write("Error! Could not fetch the value of lane_list: \n %s" % e)
+                self._logger.write("Error! Could not fetch the value of lane_list: \n %s" % e)
     
-    def add_lane(self, new_lane):
+    def add_begin_lane(self, new_begin_lane):
         """
-        Appends new_lane to the lane_list class variable.
+        Appends new_begin_lane to begin_lanes
 
         Parameters
         ----------
-            new_lane (string) : Lane object
+            new_begin_lane (string) : Lane object
 
         Returns
         -------
             N/A
         """
-        if(new_lane == None):
-            logger.write("Error! new_lane contains no value")
+        if(new_begin_lane == None):
+            self._logger.write("Error! new_begin_lane contains no value")
         else:
             try:
-                self._lane_list.append(new_lane)
+                self._begin_lanes.append(new_begin_lane)
             except Exception as e:
-                logger.write("Error! Could add new_lane to lane_list: \n %s" % e)
-
-    def delete_vehicle(self, lane):
+                self._logger.write("Error! Could add new_begin_lane to lane_list: \n %s" % e)
+    
+    def add_end_lane(self, new_end_lane):
         """
-        If lane present in the lane_list class variable, remove it. Otherwise, provide an error message.
+        Appends new_end_lane to the end_lanes class variable.
+
+        Parameters
+        ----------
+            new_end_lane (string) : Lane object
+
+        Returns
+        -------
+            N/A
+        """
+        if(new_end_lane == None):
+            self._logger.write("Error! new_end_lane contains no value")
+        else:
+            try:
+                self._end_lanes.append(new_end_lane)
+            except Exception as e:
+                self._logger.write("Error! Could add new_end_lane to lane_list: \n %s" % e)
+
+    def delete_begin_lane(self, lane):
+        """
+        If lane present in the begin_lanes class variable, remove it. Otherwise, provide an error message.
 
         Parameters
         ----------
@@ -187,14 +210,37 @@ class Street:
         """
         
         if(lane == None):
-            logger.write("Error! lane contains no value")
+            self._logger.write("Error! lane contains no value")
         elif(len(self._lane_list) == 0):
-            logger.write("Error! lane_list is empty")
+            self._logger.write("Error! begin_lanes is empty")
         else:
             try:
-                self._lane_list.remove(lane)
+                self._begin_lanes.remove(lane)
             except Exception as e:
-                logger.write("Error! could not remove lane from lane_list:\n %s" % e)
+                self._logger.write("Error! could not remove lane from begin_lanes:\n %s" % e)
+
+    def delete_end_lane(self, lane):
+        """
+        If lane present in the end_lanes class variable, remove it. Otherwise, provide an error message.
+
+        Parameters
+        ----------
+            lane (string) : Lane Object
+
+        Returns
+        -------
+            N/A
+        """
+        
+        if(lane == None):
+            self._logger.write("Error! lane contains no value")
+        elif(len(self._lane_list) == 0):
+            self._logger.write("Error! end_lanes is empty")
+        else:
+            try:
+                self._end_lanes.remove(lane)
+            except Exception as e:
+                self._logger.write("Error! could not remove lane from end_lanes:\n %s" % e)
     
     def calculate_total_street_wait_time(self):
         """
@@ -211,11 +257,11 @@ class Street:
         """
 
         if(type(self._lane_list) != str):
-            logger.write("Error! lane_list must be of type string")
+            self._logger.write("Error! lane_list must be of type string")
         elif(self._lane_list == None):
-            logger.write("Error! lane_list contains no value")
+            self._logger.write("Error! lane_list contains no value")
         elif(len(self._lane_list) == 0):
-            logger.write("Error! lane_list is empty")
+            self._logger.write("Error! lane_list is empty")
         else:
             try:
                 for l in self._lane_list:
@@ -223,7 +269,7 @@ class Street:
 
                 self._average_street_wait_time = self._average_street_wait_time / len(self._lane_list)
             except Exception as e:
-                logger.write("Error! Could not calculate average_street_wait_time: \n %s" % e)
+                self._logger.write("Error! Could not calculate average_street_wait_time: \n %s" % e)
 
     def calculate_street_volume(self):
         """
@@ -240,11 +286,11 @@ class Street:
         """
 
         if(type(self._lane_list) != str):
-            logger.write("Error! lane_list must be of type string")
+            self._logger.write("Error! lane_list must be of type string")
         elif(self._lane_list == None):
-            logger.write("Error! lane_list contains no value")
+            self._logger.write("Error! lane_list contains no value")
         elif(len(self._lane_list) == 0):
-            logger.write("Error! lane_list is empty")
+            self._logger.write("Error! lane_list is empty")
         else:
             try:
                 for l in self._lane_list:
@@ -252,4 +298,4 @@ class Street:
 
                 self._average_street_volume = self._average_street_volume / len(self._lane_list)
             except Exception as e:
-                logger.write("Error! Could not calculate average_street_volume: \n %s" % e)
+                self._logger.write("Error! Could not calculate average_street_volume: \n %s" % e)
