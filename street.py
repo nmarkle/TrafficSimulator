@@ -34,6 +34,8 @@ class Street:
             calculate_street_volume()       : Street volume for all lanes
             add_begin_lane                  : Adds begin_lane to begin_lanes
             add_end_lane                    : Adds end_lane to end_lanes
+            get_begin_lane                  : Getter for being_lanes
+            get_end_lane                    : Getter for end_lanes
         """
         
         self._name = None
@@ -43,7 +45,7 @@ class Street:
         self._average_street_volume = None
         self._begin_lanes = []
         self._end_lanes = []
-        self._logger = logger.Logger()
+        self._logger = Logger()
         
 
     def get_name(self):
@@ -156,6 +158,28 @@ class Street:
             except Exception as e:
                 self._logger.write("Error! Could not fetch the value of lane_list: \n %s" % e)
     
+    def get_begin_lanes(self):
+        """
+        Returns the value of the begin_lanes class variable. 
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            begin_lanes (string) : List of lanes
+        """
+        if(self._begin_lanes == None):
+            self._logger.write("Error! begin_lanes contains no value")
+        elif(len(self._begin_lanes) == 0):
+            self._logger.write("Error! begin_lanes is empty")
+        else:
+            try:
+                return self._begin_lanes
+            except Exception as e:
+                self._logger.write("Error! Could not fetch the value of begin_lanes: \n %s" % e)
+    
     def add_begin_lane(self, new_begin_lane):
         """
         Appends new_begin_lane to begin_lanes
@@ -175,7 +199,7 @@ class Street:
                 self._begin_lanes.append(new_begin_lane)
             except Exception as e:
                 self._logger.write("Error! Could add new_begin_lane to lane_list: \n %s" % e)
-    
+
     def add_end_lane(self, new_end_lane):
         """
         Appends new_end_lane to the end_lanes class variable.
@@ -195,6 +219,29 @@ class Street:
                 self._end_lanes.append(new_end_lane)
             except Exception as e:
                 self._logger.write("Error! Could add new_end_lane to lane_list: \n %s" % e)
+
+    def get_end_lanes(self):
+        """
+        Returns the value of the end_lanes class variable. 
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            end_lanes (string) : List of lanes
+        """
+        if(self._end_lanes == None):
+            self._logger.write("Error! end_lanes contains no value")
+        elif(len(self._end_lanes) == 0):
+            self._logger.write("Error! end_lanes is empty")
+        else:
+            try:
+                return self._end_lanes
+            except Exception as e:
+                self._logger.write("Error! Could not fetch the value of end_lanes: \n %s" % e)
+
 
     def delete_begin_lane(self, lane):
         """

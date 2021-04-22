@@ -43,6 +43,7 @@ class Lane:
             calculate_total_lane_wait_time(): Setter for total_lane_wait_time
             enqueue()                       : Adds a vehicle to the bottom of end_list
             dequeue()                       : Removes a vehicle from the top of vehicle_list 
+            get_vehicle_list                : Gets the vehicle_list
 
             get_light_status()              : Getter for light_status
             set_light_status()              : Setter for light_status
@@ -56,7 +57,7 @@ class Lane:
         self._total_lane_wait_time = None
         self._vehicle_list = []
         self._light_status = None
-        self._logger = logger.Logger()
+        self._logger = Logger()
         
     
     def get_length(self):
@@ -322,7 +323,7 @@ class Lane:
             self._logger.write("Error! vehicle cannot be a NoneType")
         else:
             try:
-                self._end_list.append(vehicle)
+                self._vehicle_list.append(vehicle)
             except Exception as e:
                 self._logger.write("Error! Could not add vehicle to end_list:\n %s" % e)
     
@@ -346,7 +347,29 @@ class Lane:
                 return self._vehicle_list.pop(0)
             except Exception as e:
                 self._logger.write("Error! failed to pop the top vehicle off vehicle list")
+                
+    def get_vehicle_list(self):
+        """
+        get vehicle_list
 
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            vehicle_list (list) : a vehicle_list in a lane
+        """
+        if(self._vehicle_list == None):
+            self._logger.write("Error! _vehicle_list contains no value")
+        elif(len(self._vehicle_list) == 0):
+            self._logger.write("Error! _vehicle_list list is empty")
+        else:
+            try:
+                return self._vehicle_list
+            except Exception as e:
+                self._logger.write("Error! Could not fetch the list of _vehicle_list: \n %s" % e)
+                
     def get_light_status(self):
         """
         Return the status of light_status

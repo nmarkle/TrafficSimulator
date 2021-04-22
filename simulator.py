@@ -2,7 +2,9 @@ import configparser as c
 from logger import Logger
 from street import Street
 from lane import Lane
+from vehicle import Vehicle
 from intersection import Intersection
+from vpython import *
 
 __author__ = "Vincent Fazio"
 __created__ = "04-11-2021"
@@ -51,7 +53,7 @@ class Simulator:
         self._day_of_week = None 
         self._time_of_day = None 
         self._duration_of_simulation = None 
-        self._logger = logger.Logger()
+        self._logger = Logger()
         self._parser = c.ConfigParser()
         self._parser.read("config.ini")
         self._number_of_intersections = int(self._parser["simulation"]["number_of_intersections"])
@@ -80,23 +82,26 @@ class Simulator:
                 # Iterate through the number of endlanes
                 for p in range(0, int(self._parser[street_key]["endlanes"])):
                     temp_lane = Lane()
-                    temp_lane.set_max_vehicle_capacity(self._parser[street_key]["queue_length"])
+                    temp_lane.set_max_vehicle_capacity(int(self._parser[street_key]["queue_length"]))
                     # Add the temp lane to the temp street
                     temp_street.add_end_lane(temp_lane)
+                    temp_vehicle = Vehicle()
+                    temp_lane.enqueue(temp_vehicle)
+                   
 
                 # Iterates through the number of beginlanes
                 for q in range(0, int(self._parser[street_key]["beginlanes"])):
                     temp_lane = Lane()
-                    temp_lane.set_max_vehicle_capacity(self._parser[street_key]["queue_length"])
+                    temp_lane.set_max_vehicle_capacity(int(self._parser[street_key]["queue_length"]))
                     # Add the temp lane to the temp street
                     temp_street.add_begin_lane(temp_lane)
+                    
 
                 # Append temporary street to intersection
                 temp_intersection.add_street(temp_street)
             # Add newly created intersection to intersection_list
             self.add_intersection(temp_intersection)
                 
-
 
     def set_running_state(self, new_running_state):
         """
@@ -244,9 +249,7 @@ class Simulator:
         -------
             N/A
         """
-        if(type(new_intersection) != str):
-            self._logger.write("Error! new_intersection must be of type string")
-        elif(new_intersection == None):
+        if(new_intersection == None):
             self._logger.write("Error! new_intersection contains no value")
         else:
             try:
@@ -323,8 +326,7 @@ class Simulator:
             try:
                 self._day_of_week = new_day_of_week
             except Exception as e:
-                self._logger.write("Error! Could not set the new_day_of_week:\n %s" % e)
-        
+                self._logger.write("Error! Could not set the new_day_of_week:\n %s" % e)    
 
     def get_day_of_week(self):
         """
@@ -434,3 +436,16 @@ class Simulator:
                 return self._duration_of_simulation
             except Exception as e:
                 self._logger.write("Error! Could not fetch the value of duration_of_simulation: \n %s" % e)
+
+
+simulator = Simulator()
+simulator.set_running_state(True)
+while(simulator.get_running_state()):
+    print(simulator.get_intersection_list())
+    print(simulator._intersection_list[0].get_street_list())
+    print(simulator._intersection_list[0]._street_list[0].get_begin_lanes())
+    print(simulator._intersection_list[0]._street_list[0].get_end_lanes())
+    print(simulator._intersection_list[0]._street_list[0]._end_lanes[0].get_vehicle_list())
+    # visually create intersection, street, and lane
+    # create vehicles
+    break

@@ -44,7 +44,7 @@ class Vehicle:
         self._action_list = []
         self._wait_time = None
         self._time_entered_queue = None
-        self._logger = logger.Logger()
+        self._logger = Logger()
     
     def choose_action(self):
         """

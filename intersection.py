@@ -48,7 +48,7 @@ class Intersection():
         self._street_list = []
         self._average_wait_time = None
         self._total_traffic_volume = None
-        self._logger = logger.Logger()
+        self._logger = Logger()
 
     def add_street(self, new_street):
         """
@@ -64,8 +64,6 @@ class Intersection():
         """
         if(new_street == None):
             self._logger.write("Error! New Street cannot be a NoneType.")
-        elif(type(new_street) != street.Street):
-            self._logger.write("Error! New Street must be of type Street.")
         else:
             try:
                 self._street_list.append(new_street)

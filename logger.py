@@ -27,9 +27,10 @@ class Logger:
             initialize() : Creates the logging directory and file to store data
             write()      : Writes the given message to the log file
         """
-        self._log_file_directory = "./log/"
+        #self._log_file_directory = "./log/"
         self._log_file_name = "logfile.log"
-        self._log_file_path = self._log_file_directory + self._log_file_name
+        #self._log_file_path = self._log_file_directory + self._log_file_name
+        self._log_file_path =  self._log_file_name
 
     def initialize(self):
         """
