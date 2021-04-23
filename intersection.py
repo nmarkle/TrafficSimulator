@@ -13,6 +13,7 @@ from lane import Lane
 from logger import Logger
 from street import Street
 
+
 class Intersection():
     def __init__(self):
         """
@@ -57,7 +58,7 @@ class Intersection():
         Parameters
         ----------
             new_street (Street) : The new street to be added to this intersection
-        
+
         Returns
         -------
             N/A
@@ -69,7 +70,7 @@ class Intersection():
                 self._street_list.append(new_street)
             except Exception as e:
                 self._logger.write("Error! Could not add the new Street object to list:\n %s" % e)
-    
+
     def get_street_list(self):
         """
         Returns the intersection's street list
@@ -191,7 +192,8 @@ class Intersection():
         sum = 0
         total_streets = len(self._street_list)
         if(total_streets == 0):
-            self._logger.write("Error! Cannot calculate average wait time of an intersection with no streets.")
+            self._logger.write(
+                "Error! Cannot calculate average wait time of an intersection with no streets.")
         else:
             for street in self._street_list:
                 sum += street.calculate_street_wait_time()
@@ -212,12 +214,13 @@ class Intersection():
         sum = 0
         total_streets = len(self._street_list)
         if(total_streets == 0):
-            self._logger.write("Error! Cannot calculate traffic volume for an intersection with no streets.")
+            self._logger.write(
+                "Error! Cannot calculate traffic volume for an intersection with no streets.")
         else:
             for street in self._street_list:
                 sum += street.calculate_street_volume()
             self._total_traffic_volume = sum
-    
+
     def left(self, street_index):
         """
         Move a vehicle to take a left turn at an intersection
@@ -229,12 +232,12 @@ class Intersection():
         -------
             N/A
         """
-        left_lane_index = self._street_list[street_index].end_lane
+        left_lane_index = len(self._street_list[street_index]._end_lanes)-1
         if street_index == 0:
             street_to_be_moved = len(self._street_list)-1
         else:
-            street_to_be_moved = street_index - 1 
-        self._street_list[street_index]._lane_list[left_lane_index].move_vehicle(street_index, left_lane_index, street_to_be_moved, self._street_list[street_index]._lane_list[street_to_be_moved].end_lane-1)
+            street_to_be_moved = street_index - 1
+        self.move_vehicle(street_index, left_lane_index, street_to_be_moved, len(self._street_list[street_index]._lane_list[street_to_be_moved]._end_lanes)-1)
 
     def straight(self, street_index, lane_index):
         """
@@ -249,15 +252,14 @@ class Intersection():
         -------
             N/A
         """
-        street_index - len(lane_list) -1
+
         if street_index <= 1:
             destination_street = street_index+2
-            
         else:
             destination_street = street_index-2
-        straight_lane_recipient = len(self._street_list[destination_street]) - (street_index + 1)
-        self._street_list[street_index]._lane_list[straight_lane_recipient].move_vehicle(street_index, lane_index, destination_lane, straight_lane_recipient)
-    
+        straight_lane_recipient = len(self._street_list[destination_street].get_lane_list()) - (lane_index + 1)
+        self.move_vehicle(street_index, lane_index, destination_street, straight_lane_recipient)
+
     def right(self, street_index):
         """
         Moves a vehicle to take a right turn
@@ -275,10 +277,8 @@ class Intersection():
             street_to_be_moved = 0
         else:
             street_to_be_moved = street_index + 1
-        self._street_list[street_index]._lane_list[right_lane_index].move_vehicle(street_index, right_lane_index, street_to_be_moved, 0) 
+        self._street_list[street_index]._lane_list[right_lane_index].move_vehicle(street_index, right_lane_index, street_to_be_moved, 0)
 
-
-    
     def move_vehicle(self, origin_street, origin_lane, destination_street, destination_lane):
         """
         Move a vehicle from one lane to another 
@@ -294,5 +294,9 @@ class Intersection():
         -------
             N/A
         """
+        print("origin street: %s" % origin_street)
+        print("origin lane: %s" % origin_lane)
+        print("destination street: %s" % destination_street)
+        print("destination lane: %s" % destination_lane)
         v = self._street_list[origin_street]._lane_list[origin_lane].dequeue()
         self._street_list[destination_street]._lane_list[destination_lane].enqueue(v)

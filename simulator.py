@@ -16,10 +16,11 @@ __maintainer__ = "Vincent Fazio"
 __email__ = "vfazio@highpoint.edu"
 __status__ = "In development"
 
+
 class Simulator:
     def __init__(self):
         """
-        The Simulator class will be responsible for keeping track of 
+        The Simulator class will be responsible for keeping track of
         and controlling the state of the simulation.
 
         Parameters
@@ -31,7 +32,7 @@ class Simulator:
         set_running_state()             : Setter for running_state
         get_running_state()             : Getter for running_state
         set_paused_state()              : Setting for paused_state
-        get_paused_state()              : Getter for paused_state 
+        get_paused_state()              : Getter for paused_state
         set_stopped_state()             : Setting for stopped state
         get_stopped_state()             : Getter for stopped state
         add_intersection()              : Appends new_intersection to intersection_list
@@ -46,17 +47,18 @@ class Simulator:
 
         """
         # All class variables
-        self._running_state = None 
-        self._paused_state = None 
-        self._stopped_state = None 
+        self._running_state = None
+        self._paused_state = None
+        self._stopped_state = None
         self._intersection_list = []
-        self._day_of_week = None 
-        self._time_of_day = None 
-        self._duration_of_simulation = None 
+        self._day_of_week = None
+        self._time_of_day = None
+        self._duration_of_simulation = None
         self._logger = Logger()
         self._parser = c.ConfigParser()
         self._parser.read("config.ini")
-        self._number_of_intersections = int(self._parser["simulation"]["number_of_intersections"])
+        self._number_of_intersections = int(
+            self._parser["simulation"]["number_of_intersections"])
         self._intersections = []
 
         # Build from the configuration file
@@ -66,7 +68,8 @@ class Simulator:
             temp_intersection = Intersection()
 
             # Pull number of streets from the configuration file
-            number_of_streets = int(self._parser[intersection_key]["number_of_streets"])
+            number_of_streets = int(
+                self._parser[intersection_key]["number_of_streets"])
 
             # Iterate through number of streets in configuration file
             for j in range(0, number_of_streets):
@@ -82,30 +85,30 @@ class Simulator:
                 # Iterate through the number of endlanes
                 for p in range(0, int(self._parser[street_key]["endlanes"])):
                     temp_lane = Lane()
-                    temp_lane.set_max_vehicle_capacity(int(self._parser[street_key]["queue_length"]))
+                    temp_lane.set_max_vehicle_capacity(
+                        int(self._parser[street_key]["queue_length"]))
                     # Add the temp lane to the temp street
                     temp_street.add_end_lane(temp_lane)
-                    temp_vehicle = Vehicle()
-                    temp_lane.enqueue(temp_vehicle)
-                   
 
                 # Iterates through the number of beginlanes
                 for q in range(0, int(self._parser[street_key]["beginlanes"])):
                     temp_lane = Lane()
-                    temp_lane.set_max_vehicle_capacity(int(self._parser[street_key]["queue_length"]))
+                    temp_lane.set_max_vehicle_capacity(
+                        int(self._parser[street_key]["queue_length"]))
                     # Add the temp lane to the temp street
                     temp_street.add_begin_lane(temp_lane)
-                    
+                    temp_vehicle = Vehicle()
+                    temp_lane.enqueue(temp_vehicle)
 
+                temp_street.set_lane_list()
                 # Append temporary street to intersection
                 temp_intersection.add_street(temp_street)
             # Add newly created intersection to intersection_list
             self.add_intersection(temp_intersection)
-                
 
     def set_running_state(self, new_running_state):
         """
-        Assigns new_running_state class variable the value of running_state variable. 
+        Assigns new_running_state class variable the value of running_state variable.
 
         Parameters
         ----------
@@ -118,12 +121,14 @@ class Simulator:
         if(new_running_state == None):
             self._logger.write("Error! new_running_state cannot be a NoneType")
         elif(type(new_running_state) != bool):
-            self._logger.write("Error! new_running_state must be of type boolean")
+            self._logger.write(
+                "Error! new_running_state must be of type boolean")
         else:
             try:
                 self._running_state = new_running_state
             except Exception as e:
-                self._logger.write("Error! Could not set the new_running_state:\n %s" % e)
+                self._logger.write(
+                    "Error! Could not set the new_running_state:\n %s" % e)
 
     def get_running_state(self):
         """
@@ -145,12 +150,12 @@ class Simulator:
             try:
                 return self._running_state
             except Exception as e:
-                self._logger.write("Error! Could not fetch the value of running_state: \n %s" % e)
-        
-        
+                self._logger.write(
+                    "Error! Could not fetch the value of running_state: \n %s" % e)
+
     def set_paused_state(self, new_paused_state):
         """
-        Assigns new_paused_state class variable the value of paused_state variable. 
+        Assigns new_paused_state class variable the value of paused_state variable.
 
         Parameters
         ----------
@@ -160,16 +165,18 @@ class Simulator:
         -------
             N/A
         """
-        
+
         if(new_paused_state == None):
             self._logger.write("Error! new_paused_state cannot be a NoneType")
         elif(type(new_paused_state) != bool):
-            self._logger.write("Error! new_paused_state must be of type boolean")
+            self._logger.write(
+                "Error! new_paused_state must be of type boolean")
         else:
             try:
                 self._paused_state = new_paused_state
             except Exception as e:
-                self._logger.write("Error! Could not set the new_paused_state:\n %s" % e)
+                self._logger.write(
+                    "Error! Could not set the new_paused_state:\n %s" % e)
 
     def get_paused_state(self):
         """
@@ -191,7 +198,8 @@ class Simulator:
             try:
                 return self._paused_state
             except Exception as e:
-                self._logger.write("Error! Could not fetch the value of paused_state: \n %s" % e)
+                self._logger.write(
+                    "Error! Could not fetch the value of paused_state: \n %s" % e)
 
     def set_stopped_state(self, new_stopped_state):
         """
@@ -203,17 +211,19 @@ class Simulator:
 
         Returns
         -------
-            N/A  
+            N/A
         """
         if(new_stopped_state == None):
             self._logger.write("Error! new_stopped_state cannot be a NoneType")
         elif(type(new_stopped_state) != bool):
-            self._logger.write("Error! new_stopped_state must be of type boolean")
+            self._logger.write(
+                "Error! new_stopped_state must be of type boolean")
         else:
             try:
                 self._stopped_state = new_stopped_state
             except Exception as e:
-                self._logger.write("Error! Could not set the new_stopped_state:\n %s" % e)
+                self._logger.write(
+                    "Error! Could not set the new_stopped_state:\n %s" % e)
 
     def get_stopped_state(self):
         """
@@ -235,7 +245,8 @@ class Simulator:
             try:
                 return self._stopped_state
             except Exception as e:
-                self._logger.write("Error! Could not fetch the value of stopped_state: \n %s" % e)
+                self._logger.write(
+                    "Error! Could not fetch the value of stopped_state: \n %s" % e)
 
     def add_intersection(self, new_intersection):
         """
@@ -255,11 +266,12 @@ class Simulator:
             try:
                 self._intersection_list.append(new_intersection)
             except Exception as e:
-                self._logger.write("Error! Could add new_intersection to intersection: \n %s" % e)
+                self._logger.write(
+                    "Error! Could add new_intersection to intersection: \n %s" % e)
 
     def delete_intersection(self, intersection):
         """
-        If intersection is present in the intersection_list class variable, remove it. 
+        If intersection is present in the intersection_list class variable, remove it.
         Otherwise, provide an error message.
 
         Parameters
@@ -280,7 +292,8 @@ class Simulator:
             try:
                 self._intersection_list.remove(intersection)
             except Exception as e:
-                self._logger.write("Error! could not remove lane from intersection_list:\n %s" % e)
+                self._logger.write(
+                    "Error! could not remove lane from intersection_list:\n %s" % e)
 
     def get_intersection_list(self):
         """
@@ -295,7 +308,8 @@ class Simulator:
             intersection_list (string) : List of intersections
         """
         if(type(self._intersection_list) != list):
-            self._logger.write("Error! intersection_list must be of type string")
+            self._logger.write(
+                "Error! intersection_list must be of type string")
         elif(self._intersection_list == None):
             self._logger.write("Error! intersection_list contains no value")
         elif(len(self._intersection_list) == 0):
@@ -304,7 +318,8 @@ class Simulator:
             try:
                 return self._intersection_list
             except Exception as e:
-                self._logger.write("Error! Could not fetch the value of intersection_list: \n %s" % e)
+                self._logger.write(
+                    "Error! Could not fetch the value of intersection_list: \n %s" % e)
 
     def set_day_of_week(self, new_day_of_week):
         """
@@ -312,11 +327,11 @@ class Simulator:
 
         Parameters
         ----------
-            new_day_of_week (string) : The new value for 'day_of_week' variable 
+            new_day_of_week (string) : The new value for 'day_of_week' variable
 
         Returns
         -------
-          N/A  
+          N/A
         """
         if(new_day_of_week == None):
             self._logger.write("Error! new_day_of_week cannot be a NoneType")
@@ -326,18 +341,19 @@ class Simulator:
             try:
                 self._day_of_week = new_day_of_week
             except Exception as e:
-                self._logger.write("Error! Could not set the new_day_of_week:\n %s" % e)    
+                self._logger.write(
+                    "Error! Could not set the new_day_of_week:\n %s" % e)
 
     def get_day_of_week(self):
         """
-        Returns the day_of_week variable in the Simulator Class. 
+        Returns the day_of_week variable in the Simulator Class.
 
         Parameters
         ----------
             N/A
 
         Returns
-        ------- 
+        -------
             day_of_week (string) : Class variable to store the state of 'day_of_week'
         """
         if(type(self._day_of_week) != str):
@@ -348,11 +364,12 @@ class Simulator:
             try:
                 return self._day_of_week
             except Exception as e:
-                self._logger.write("Error! Could not fetch the value of day_of_week: \n %s" % e)
+                self._logger.write(
+                    "Error! Could not fetch the value of day_of_week: \n %s" % e)
 
     def set_time_of_day(self, new_time_of_day):
         """
-        Assigns new_time_of_day value to the time_of_day value in the Simulator Class. 
+        Assigns new_time_of_day value to the time_of_day value in the Simulator Class.
 
         Parameters
         ----------
@@ -370,7 +387,8 @@ class Simulator:
             try:
                 self._time_of_day = new_time_of_day
             except Exception as e:
-                self._logger.write("Error! Could not set the new_time_of_day:\n %s" % e)
+                self._logger.write(
+                    "Error! Could not set the new_time_of_day:\n %s" % e)
 
     def get_time_of_day(self):
         """
@@ -392,11 +410,12 @@ class Simulator:
             try:
                 return self._time_of_day
             except Exception as e:
-                self._logger.write("Error! Could not fetch the value of time_of_day: \n %s" % e)
+                self._logger.write(
+                    "Error! Could not fetch the value of time_of_day: \n %s" % e)
 
     def set_duration_of_simulation(self, new_duration_of_simulation):
         """
-        Assigns new_duration_of_simulation value to the duration_of_simulation value in the Simulator Class. 
+        Assigns new_duration_of_simulation value to the duration_of_simulation value in the Simulator Class.
 
         Parameters
         ----------
@@ -406,14 +425,17 @@ class Simulator:
             N/A
         """
         if(new_duration_of_simulation == None):
-            self._logger.write("Error! new_duration_of_simulation cannot be a NoneType")
+            self._logger.write(
+                "Error! new_duration_of_simulation cannot be a NoneType")
         elif(type(new_duration_of_simulation) != float):
-            self._logger.write("Error! new_duration_of_simulation must be of type string")
+            self._logger.write(
+                "Error! new_duration_of_simulation must be of type string")
         else:
             try:
                 self._duration_of_simulation = new_duration_of_simulation
             except Exception as e:
-                self._logger.write("Error! Could not set the new_duration_of_simulation:\n %s" % e)
+                self._logger.write(
+                    "Error! Could not set the new_duration_of_simulation:\n %s" % e)
 
     def get_duration_of_simulation(self):
         """
@@ -435,17 +457,45 @@ class Simulator:
             try:
                 return self._duration_of_simulation
             except Exception as e:
-                self._logger.write("Error! Could not fetch the value of duration_of_simulation: \n %s" % e)
+                self._logger.write(
+                    "Error! Could not fetch the value of duration_of_simulation: \n %s" % e)
 
 
-simulator = Simulator()
-simulator.set_running_state(True)
-while(simulator.get_running_state()):
-    print(simulator.get_intersection_list())
-    print(simulator._intersection_list[0].get_street_list())
-    print(simulator._intersection_list[0]._street_list[0].get_begin_lanes())
-    print(simulator._intersection_list[0]._street_list[0].get_end_lanes())
-    print(simulator._intersection_list[0]._street_list[0]._end_lanes[0].get_vehicle_list())
-    # visually create intersection, street, and lane
-    # create vehicles
-    break
+if __name__ == "__main__":
+    simulator = Simulator()
+    simulator.set_running_state(True)
+    while(simulator.get_running_state()):
+        print(simulator.get_intersection_list())
+        print(simulator._intersection_list[0].get_street_list())
+        for i in range(0, len(simulator._intersection_list[0].get_street_list())):
+            print(
+                simulator._intersection_list[0]._street_list[i].get_end_lanes())
+            print(
+                simulator._intersection_list[0]._street_list[i].get_begin_lanes())
+        # print(simulator._intersection_list[0]._street_list[0]._end_lanes[0].get_vehicle_list())
+        # visually create intersection, street, and lane
+        # create vehicles
+
+        # For number of streets
+
+        # for j in range(0, len(simulator._intersection_list[0].get_street_list())):
+        # simulator._intersection_list[0].straight(j, 3)
+        print("STRAIGHT TEST")
+        print("Beginning State:\n--------------------------------")
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[2]._lane_list[1].get_vehicle_list())
+        simulator._intersection_list[0].straight(0, 3)
+        print("Beginning End State:\n--------------------------------")
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[2]._lane_list[1].get_vehicle_list())
+
+        print("LEFT TEST")
+        print("Beginning State:\n--------------------------------")
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
+        simulator._intersection_list[0].left(0)
+        print("Beginning End State:\n--------------------------------")
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
+
+        break

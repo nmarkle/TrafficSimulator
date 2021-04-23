@@ -11,6 +11,7 @@ __maintainer__ = "Blake Vogel"
 __email__ = "bvogel@highpoint.edu"
 __status__ = "In development"
 
+
 class Street:
     def __init__(self):
         """
@@ -28,25 +29,25 @@ class Street:
             set_orientation()               : Setter for orientation
             get_orientation()               : Getter for orientation
             get_lane_list()                 : Getter for lane_list
+            set_lane_list()                 : Setter for lane_list
             add_lane()                      : Add lane to lane_list
             delete_lane()                   : Delete lane from lane_list
-            calculate_street_wait_time()    : Street wait_time for all lanes 
+            calculate_street_wait_time()    : Street wait_time for all lanes
             calculate_street_volume()       : Street volume for all lanes
             add_begin_lane                  : Adds begin_lane to begin_lanes
             add_end_lane                    : Adds end_lane to end_lanes
             get_begin_lane                  : Getter for being_lanes
             get_end_lane                    : Getter for end_lanes
         """
-        
+
         self._name = None
         self._orientation = None
-        self._lane_list = None
+        self._lane_list = []
         self._average_street_wait_time = None
         self._average_street_volume = None
         self._begin_lanes = []
         self._end_lanes = []
         self._logger = Logger()
-        
 
     def get_name(self):
         """
@@ -69,10 +70,10 @@ class Street:
                 return self._name
             except Exception as e:
                 self._logger.write("Error! Could not fetch the value of name: \n %s" % e)
-    
+
     def set_name(self, new_name):
         """
-        Assigns name class variable the value of new_name variable. 
+        Assigns name class variable the value of new_name variable.
 
         Parameters
         ----------
@@ -94,7 +95,7 @@ class Street:
 
     def get_orientation(self):
         """
-        Returns the value of the orientation class variable. 
+        Returns the value of the orientation class variable.
 
         Parameters
         ----------
@@ -113,10 +114,10 @@ class Street:
                 return self._orientation
             except Exception as e:
                 self._logger.write("Error! Could not fetch the value of orientation: \n %s" % e)
-    
+
     def set_orientation(self, new_orientation):
         """
-        Assigns orientation class variable the value of new_orientation variable. 
+        Assigns orientation class variable the value of new_orientation variable.
 
         Parameters
         ----------
@@ -138,7 +139,7 @@ class Street:
 
     def get_lane_list(self):
         """
-        Returns the value of the lane_list class variable. 
+        Returns the value of the lane_list class variable.
 
         Parameters
         ----------
@@ -157,10 +158,30 @@ class Street:
                 return self._lane_list
             except Exception as e:
                 self._logger.write("Error! Could not fetch the value of lane_list: \n %s" % e)
-    
+
+    def set_lane_list(self):
+        """
+        combines begin and end lane lists into lane_list
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            lane_list (string) : List of lanes
+        """
+        if(self._lane_list == None):
+            self._logger.write("Error! lane_list contains no value")
+        else:
+            try:
+                self._lane_list = self._end_lanes + self._begin_lanes
+            except Exception as e:
+                self._logger.write("Error! Could not set lane_list: \n %s" % e)
+
     def get_begin_lanes(self):
         """
-        Returns the value of the begin_lanes class variable. 
+        Returns the value of the begin_lanes class variable.
 
         Parameters
         ----------
@@ -179,7 +200,7 @@ class Street:
                 return self._begin_lanes
             except Exception as e:
                 self._logger.write("Error! Could not fetch the value of begin_lanes: \n %s" % e)
-    
+
     def add_begin_lane(self, new_begin_lane):
         """
         Appends new_begin_lane to begin_lanes
@@ -222,7 +243,7 @@ class Street:
 
     def get_end_lanes(self):
         """
-        Returns the value of the end_lanes class variable. 
+        Returns the value of the end_lanes class variable.
 
         Parameters
         ----------
@@ -242,7 +263,6 @@ class Street:
             except Exception as e:
                 self._logger.write("Error! Could not fetch the value of end_lanes: \n %s" % e)
 
-
     def delete_begin_lane(self, lane):
         """
         If lane present in the begin_lanes class variable, remove it. Otherwise, provide an error message.
@@ -255,7 +275,7 @@ class Street:
         -------
             N/A
         """
-        
+
         if(lane == None):
             self._logger.write("Error! lane contains no value")
         elif(len(self._lane_list) == 0):
@@ -278,7 +298,7 @@ class Street:
         -------
             N/A
         """
-        
+
         if(lane == None):
             self._logger.write("Error! lane contains no value")
         elif(len(self._lane_list) == 0):
@@ -288,10 +308,10 @@ class Street:
                 self._end_lanes.remove(lane)
             except Exception as e:
                 self._logger.write("Error! could not remove lane from end_lanes:\n %s" % e)
-    
+
     def calculate_total_street_wait_time(self):
         """
-        Gets the list of lanes and from each lane get the average lane wait time. 
+        Gets the list of lanes and from each lane get the average lane wait time.
         Then computes the average of all the lanes for the street.
 
         Parameters
@@ -314,14 +334,14 @@ class Street:
                 for l in self._lane_list:
                     self._average_street_wait_time += l.total_lane_wait_time
 
-                self._average_street_wait_time = self._average_street_wait_time / len(self._lane_list)
+                self._average_street_wait_time = self._average_street_wait_time/len(self._lane_list)
             except Exception as e:
                 self._logger.write("Error! Could not calculate average_street_wait_time: \n %s" % e)
 
     def calculate_street_volume(self):
         """
-        Gets the list of lanes and from each lane get the total lane volume. 
-        Then computes the total street volume by adding all the lane volumes together. 
+        Gets the list of lanes and from each lane get the total lane volume.
+        Then computes the total street volume by adding all the lane volumes together.
 
         Parameters
         ----------
@@ -341,8 +361,8 @@ class Street:
         else:
             try:
                 for l in self._lane_list:
-                    self._average_street_volume += l.total_lane_volume 
-
-                self._average_street_volume = self._average_street_volume / len(self._lane_list)
+                    self._average_street_volume += l.total_lane_volume
+                    self._average_street_volume = self._average_street_volume/ len(self._lane_list)
             except Exception as e:
                 self._logger.write("Error! Could not calculate average_street_volume: \n %s" % e)
+
