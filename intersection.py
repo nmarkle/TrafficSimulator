@@ -232,12 +232,12 @@ class Intersection():
         -------
             N/A
         """
-        left_lane_index = len(self._street_list[street_index]._end_lanes)-1
+        left_lane_index = len(self._street_list[street_index]._end_lanes)
         if street_index == 0:
             street_to_be_moved = len(self._street_list)-1
         else:
             street_to_be_moved = street_index - 1
-        self.move_vehicle(street_index, left_lane_index, street_to_be_moved, len(self._street_list[street_index]._lane_list[street_to_be_moved]._end_lanes)-1)
+        self.move_vehicle(street_index, left_lane_index, street_to_be_moved, len(self._street_list[street_index]._end_lanes)-1)
 
     def straight(self, street_index, lane_index):
         """

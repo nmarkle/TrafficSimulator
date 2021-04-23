@@ -488,14 +488,16 @@ if __name__ == "__main__":
         print("Beginning End State:\n--------------------------------")
         print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
         print(simulator._intersection_list[0]._street_list[2]._lane_list[1].get_vehicle_list())
-
+        print()
+        print()
         print("LEFT TEST")
         print("Beginning State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
         print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
         simulator._intersection_list[0].left(0)
+        print()
         print("Beginning End State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
         print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
 
         break
