@@ -531,27 +531,17 @@ if __name__ == "__main__":
         print("LEFT TEST WITH LIGHTS")
         print("Beginning State:\n--------------------------------")
         print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[2]._lane_list[2].get_vehicle_list())
         simulator._intersection_list[0]._street_list[0]._lane_list[2].set_light_status(True) #set light status
+        simulator._intersection_list[0]._street_list[2]._lane_list[2].set_light_status(True) #set light status
         if simulator._intersection_list[0]._street_list[0]._lane_list[2].get_light_status(): #if the light is green, turn left
             simulator._intersection_list[0].left(0)
-        print()
-        print("Beginning End State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
-        print()
-        print()
-        
-        print("Beginning State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
-        simulator._intersection_list[0]._street_list[2]._lane_list[2].set_light_status(True) #set light status 
-        if simulator._intersection_list[0]._street_list[2]._lane_list[2].get_light_status(): #if the light is green, turn left
+        if simulator._intersection_list[0]._street_list[2]._lane_list[2].get_light_status():
             simulator._intersection_list[0].left(2)
         print()
         print("Beginning End State:\n--------------------------------")
         print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[2]._lane_list[2].get_vehicle_list())
         print()
         print()
         break
