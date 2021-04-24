@@ -395,7 +395,12 @@ class Lane:
         -------
             N/A
         """
-        self.__light_status = new_light_status
+        if type(new_light_status) != bool:
+            self._logger.write("Error! new_light_status should be of type bool")
+        try:
+            self._light_status = new_light_status
+        except Exception as e:
+            self._logger.write("Error! could not set light status")
    
     def change_light(self):
         """

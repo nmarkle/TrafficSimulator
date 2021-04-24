@@ -96,6 +96,8 @@ class Simulator:
                     temp_lane.set_max_vehicle_capacity(
                         int(self._parser[street_key]["queue_length"]))
                     # Add the temp lane to the temp street
+                    #all lights are red
+                    temp_lane.set_light_status(False)
                     temp_street.add_begin_lane(temp_lane)
                     temp_vehicle = Vehicle()
                     temp_lane.enqueue(temp_vehicle)
@@ -468,10 +470,8 @@ if __name__ == "__main__":
         print(simulator.get_intersection_list())
         print(simulator._intersection_list[0].get_street_list())
         for i in range(0, len(simulator._intersection_list[0].get_street_list())):
-            print(
-                simulator._intersection_list[0]._street_list[i].get_end_lanes())
-            print(
-                simulator._intersection_list[0]._street_list[i].get_begin_lanes())
+            print(simulator._intersection_list[0]._street_list[i].get_end_lanes())
+            print(simulator._intersection_list[0]._street_list[i].get_begin_lanes())
         # print(simulator._intersection_list[0]._street_list[0]._end_lanes[0].get_vehicle_list())
         # visually create intersection, street, and lane
         # create vehicles
@@ -480,7 +480,7 @@ if __name__ == "__main__":
 
         # for j in range(0, len(simulator._intersection_list[0].get_street_list())):
         # simulator._intersection_list[0].straight(j, 3)
-        print("STRAIGHT TEST")
+        """print("STRAIGHT TEST")
         print("Beginning State:\n--------------------------------")
         print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
         print(simulator._intersection_list[0]._street_list[2]._lane_list[1].get_vehicle_list())
@@ -510,4 +510,48 @@ if __name__ == "__main__":
         print("Beginning End State:\n--------------------------------")
         print(simulator._intersection_list[0]._street_list[0]._lane_list[4].get_vehicle_list())
         print(simulator._intersection_list[0]._street_list[1]._lane_list[0].get_vehicle_list())
+        """
+
+        """
+        print("STRAIGHT WITH LIGHT")
+        print("Beginning State:\n--------------------------------")
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[2]._lane_list[1].get_vehicle_list())
+        #simulator._intersection_list[0]._street_list[0]._lane_list[3].set_light_status(True) #set light status
+        #print("STATUS: %s" % simulator._intersection_list[0]._street_list[0]._lane_list[3].get_light_status())
+        if simulator._intersection_list[0]._street_list[0]._lane_list[3].get_light_status():
+            simulator._intersection_list[0].straight(0, 3)
+        print("Beginning End State:\n--------------------------------")
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[2]._lane_list[1].get_vehicle_list())
+        print()
+        print()
+        """
+
+        print("LEFT TEST WITH LIGHTS")
+        print("Beginning State:\n--------------------------------")
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
+        simulator._intersection_list[0]._street_list[0]._lane_list[2].set_light_status(True) #set light status
+        if simulator._intersection_list[0]._street_list[0]._lane_list[2].get_light_status(): #if the light is green, turn left
+            simulator._intersection_list[0].left(0)
+        print()
+        print("Beginning End State:\n--------------------------------")
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
+        print()
+        print()
+        
+        print("Beginning State:\n--------------------------------")
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
+        simulator._intersection_list[0]._street_list[2]._lane_list[2].set_light_status(True) #set light status 
+        if simulator._intersection_list[0]._street_list[2]._lane_list[2].get_light_status(): #if the light is green, turn left
+            simulator._intersection_list[0].left(2)
+        print()
+        print("Beginning End State:\n--------------------------------")
+        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
+        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
+        print()
+        print()
         break
