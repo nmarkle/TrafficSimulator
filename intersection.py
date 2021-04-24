@@ -277,7 +277,7 @@ class Intersection():
             street_to_be_moved = 0
         else:
             street_to_be_moved = street_index + 1
-        self._street_list[street_index]._lane_list[right_lane_index].move_vehicle(street_index, right_lane_index, street_to_be_moved, 0)
+        self.move_vehicle(street_index, right_lane_index, street_to_be_moved, 0)
 
     def move_vehicle(self, origin_street, origin_lane, destination_street, destination_lane):
         """
