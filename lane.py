@@ -58,6 +58,7 @@ class Lane:
         self._vehicle_list = []
         self._light_status = None
         self._logger = Logger()
+        self._starting_coordinate = None
         
     
     def get_length(self):
@@ -414,4 +415,18 @@ class Lane:
             N/A
         """
         self._light_status = not self._light_status
+
+    def set_starting_coordinate(self, new_coordinate):
+        """
+        Sets the starting coordinate for the first Vehicle in the lane list
+
+        Parameters
+        ----------
+            new_coordinate (tuple) : A tuple containing the x and y value of the starting coordinate of the lane
+
+        Returns
+        -------
+            N/A
+        """
+        self._starting_coordinate = new_coordinate
     

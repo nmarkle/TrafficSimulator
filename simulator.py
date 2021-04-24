@@ -5,6 +5,7 @@ from lane import Lane
 from vehicle import Vehicle
 from intersection import Intersection
 from vpython import *
+import json
 
 __author__ = "Vincent Fazio"
 __created__ = "04-11-2021"
@@ -57,8 +58,7 @@ class Simulator:
         self._logger = Logger()
         self._parser = c.ConfigParser()
         self._parser.read("config.ini")
-        self._number_of_intersections = int(
-            self._parser["simulation"]["number_of_intersections"])
+        self._number_of_intersections = int(self._parser["simulation"]["number_of_intersections"])
         self._intersections = []
 
         # Build from the configuration file
@@ -68,8 +68,7 @@ class Simulator:
             temp_intersection = Intersection()
 
             # Pull number of streets from the configuration file
-            number_of_streets = int(
-                self._parser[intersection_key]["number_of_streets"])
+            number_of_streets = int(self._parser[intersection_key]["number_of_streets"])
 
             # Iterate through number of streets in configuration file
             for j in range(0, number_of_streets):
@@ -102,7 +101,22 @@ class Simulator:
                     temp_vehicle = Vehicle()
                     temp_lane.enqueue(temp_vehicle)
 
+                # Fetch coordinate list from config file
+                coordinate_list = json.loads(self._parser.get(street_key, "start_coordinates"))
+
+                print(coordinate_list)
+                print(coordinate_list[0][1])
+
+                # Set the lane_list
                 temp_street.set_lane_list()
+
+                # Iterate through lane list to set starting coordinates of each lane
+                for lane_index in range(0, len(temp_street._lane_list)):
+                    temp_x = int(coordinate_list[lane_index][0])
+                    temp_y = int(coordinate_list[lane_index][1])
+                    temp_coordinate = (temp_x, temp_y)
+                    temp_street._lane_list[lane_index].set_starting_coordinate(temp_coordinate)
+                
                 # Append temporary street to intersection
                 temp_intersection.add_street(temp_street)
             # Add newly created intersection to intersection_list
@@ -528,6 +542,7 @@ if __name__ == "__main__":
         print()
         """
 
+        """
         print("LEFT TEST WITH LIGHTS")
         print("Beginning State:\n--------------------------------")
         print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
@@ -544,4 +559,15 @@ if __name__ == "__main__":
         print(simulator._intersection_list[0]._street_list[2]._lane_list[2].get_vehicle_list())
         print()
         print()
+        """
+        print()
+        print()
+
+        print("Checking the starting coordinates of all lanes")
+        for intersection in simulator._intersection_list:
+            for street in intersection._street_list:
+                for lane_index in range(0, len(street._lane_list)):
+                    print("%s's coordinates are (%d, %d)" % (street._name, street._lane_list[lane_index]._starting_coordinate[0], street._lane_list[lane_index]._starting_coordinate[1]))
+
+
         break
