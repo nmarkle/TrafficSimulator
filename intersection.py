@@ -192,8 +192,7 @@ class Intersection():
         sum = 0
         total_streets = len(self._street_list)
         if(total_streets == 0):
-            self._logger.write(
-                "Error! Cannot calculate average wait time of an intersection with no streets.")
+            self._logger.write("Error! Cannot calculate average wait time of an intersection with no streets.")
         else:
             for street in self._street_list:
                 sum += street.calculate_street_wait_time()
@@ -232,12 +231,20 @@ class Intersection():
         -------
             N/A
         """
-        left_lane_index = len(self._street_list[street_index]._end_lanes)
-        if street_index == 0:
-            street_to_be_moved = len(self._street_list)-1
+        if street_index is None:
+            self._logger.write('Error! street_index in left is None')
+        elif type(street_index) != int:
+            self._logger.write('Error! street_index in left is not of type int')
         else:
-            street_to_be_moved = street_index - 1
-        self.move_vehicle(street_index, left_lane_index, street_to_be_moved, len(self._street_list[street_index]._end_lanes)-1)
+            try:
+                left_lane_index = len(self._street_list[street_index]._end_lanes)
+                if street_index == 0:
+                    street_to_be_moved = len(self._street_list)-1
+                else:
+                    street_to_be_moved = street_index - 1
+                self.move_vehicle(street_index, left_lane_index, street_to_be_moved, len(self._street_list[street_index]._end_lanes)-1)
+            except Exception as e:
+                self._logger.write('Error! failed to move_vehicle in left:\n %s' % e)
 
     def straight(self, street_index, lane_index):
         """
@@ -252,13 +259,22 @@ class Intersection():
         -------
             N/A
         """
-
-        if street_index <= 1:
-            destination_street = street_index+2
+        if street_index is None:
+            self._logger.write('Error! street_index in straight is None')
+        elif type(street_index) != int:
+            self._logger.write('Error! street_index in straight is not of type int')
+        elif type(lane_index) != int:
+            self._logger.write('Error! lane_index in straight is not of type int')
         else:
-            destination_street = street_index-2
-        straight_lane_recipient = len(self._street_list[destination_street].get_lane_list()) - (lane_index + 1)
-        self.move_vehicle(street_index, lane_index, destination_street, straight_lane_recipient)
+            try:
+                if street_index <= 1:
+                    destination_street = street_index+2
+                else:
+                    destination_street = street_index-2
+                straight_lane_recipient = len(self._street_list[destination_street].get_lane_list()) - (lane_index + 1)
+                self.move_vehicle(street_index, lane_index, destination_street, straight_lane_recipient)
+            except Exception as e:
+                self._logger.write('Error! failed to move vehicle in straight:\n %s' % e)
 
     def right(self, street_index):
         """
@@ -272,12 +288,20 @@ class Intersection():
         -------
             N/A
         """
-        right_lane_index = len(self._street_list[street_index]._lane_list)-1
-        if street_index == len(self._street_list)-1:
-            street_to_be_moved = 0
+        if street_index is None:
+            self._logger.write('Error! street_index in right is None')
+        elif type(street_index) != int:
+            self._logger.write('Error! street_index in right is not of type int')
         else:
-            street_to_be_moved = street_index + 1
-        self.move_vehicle(street_index, right_lane_index, street_to_be_moved, 0)
+            try:
+                right_lane_index = len(self._street_list[street_index]._lane_list)-1
+                if street_index == len(self._street_list)-1:
+                    street_to_be_moved = 0
+                else:
+                    street_to_be_moved = street_index + 1
+                self.move_vehicle(street_index, right_lane_index, street_to_be_moved, 0)
+            except Exception as e:
+                self._logger.write('Error! failed to move vehicle in right:\n %s' % e)
 
     def move_vehicle(self, origin_street, origin_lane, destination_street, destination_lane):
         """
@@ -294,9 +318,24 @@ class Intersection():
         -------
             N/A
         """
-        print("origin street: %s" % origin_street)
-        print("origin lane: %s" % origin_lane)
-        print("destination street: %s" % destination_street)
-        print("destination lane: %s" % destination_lane)
-        v = self._street_list[origin_street]._lane_list[origin_lane].dequeue()
-        self._street_list[destination_street]._lane_list[destination_lane].enqueue(v)
+        if origin_street is None:
+            self._logger.write('Error! origin_street is None')
+        elif origin_lane is None:
+            self._logger.write('Error! origin_lane is None')
+        elif destination_street is None:
+            self._logger.write('Error! destination_street is None')
+        elif destination_lane is None:
+            self._logger.write('Error! destination_lane is None')
+        elif type(origin_street) != int:
+            self._logger.write('Error! origin_street needs to be of type int')
+        elif type(origin_lane) != int:
+            self._logger.write('Error! origin_lane needs to be of type int')
+        elif type(destination_street) != int:
+            self._logger.write('Error! destination_street needs to be of type int')
+        elif type(destination_lane) != int:
+            self._logger.write('Error! destination_lane needs to be of type int')
+        try:
+            v = self._street_list[origin_street]._lane_list[origin_lane].dequeue()
+            self._street_list[destination_street]._lane_list[destination_lane].enqueue(v)
+        except Exception as e:
+            self._logger.write('Error! failed to removed vehicle from origin_lane and move it to destination_lane:\n %s' % e)
