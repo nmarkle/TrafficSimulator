@@ -48,6 +48,8 @@ class Lane:
             get_light_status()              : Getter for light_status
             set_light_status()              : Setter for light_status
             change_light()                  : Inverses the current boolean status
+            set_starting_coordinate()       : Setter for starting_coordinate
+            get_starting_coordinate()       : Getter for starting_coordinate
         """
         
         self._length = None
@@ -428,5 +430,35 @@ class Lane:
         -------
             N/A
         """
-        self._starting_coordinate = new_coordinate
-    
+        if type(new_coordinate) != tuple:
+            self._logger.write("Error! new_coordinate should be a tuple")
+        elif new_coordinate == None:
+            self._logger.write("Error! new_coordinate does not contain a value")
+        else:
+            try:
+                self._starting_coordinate = new_coordinate
+            except Exception as e:
+                self._logger.write("Error! could not set _starting_coordinate: %s" % e)
+
+    def get_starting_coordinate(self):
+        """
+        Gets the starting coordinate for the first Vehicle in the lane list
+
+        Parameters
+        ----------
+            N/A
+
+        Returns
+        -------
+            new_coordinate (tuple) : A tuple containing the x and y value of the starting coordinate of the lane
+        """
+        if type(self._starting_coordinate) != tuple:
+            self._logger.write("Error! starting_coordinate should be a tupple")
+        elif self._starting_coordinate == None:
+            #this is dead code
+            self._logger.write("Error! starting_coordinate does not contain a value")
+        else:
+            try:
+                return self._starting_coordinate
+            except Exception as e:
+                self._logger.write("Error! could not get starting_coordinate: %s" % e)
