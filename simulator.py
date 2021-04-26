@@ -5,15 +5,15 @@ from lane import Lane
 from vehicle import Vehicle
 from intersection import Intersection
 from vpython import *
-import json
+import json, time, random
 
 __author__ = "Vincent Fazio"
 __created__ = "04-11-2021"
-__editor__ = "Vincent Fazio"
+__editor__ = "Vincent Fazio, Blake Vogel, Nathan Markle, Travis Stop, Anthony Demattos"
 __edited__ = "04-12-2021"
 __rationale___ = "Initial Creation"
-__version__ = "0.0.1"
-__maintainer__ = "Vincent Fazio"
+__version__ = "0.2.3"
+__maintainer__ = "Vincent Fazio, Blake Vogel, Nathan Markle, Travis Stop, Anthony Demattos"
 __email__ = "vfazio@highpoint.edu"
 __status__ = "In development"
 
@@ -103,9 +103,6 @@ class Simulator:
 
                 # Fetch coordinate list from config file
                 coordinate_list = json.loads(self._parser.get(street_key, "start_coordinates"))
-
-                print(coordinate_list)
-                print(coordinate_list[0][1])
 
                 # Set the lane_list
                 temp_street.set_lane_list()
@@ -481,93 +478,25 @@ if __name__ == "__main__":
     simulator = Simulator()
     simulator.set_running_state(True)
     while(simulator.get_running_state()):
-        print(simulator.get_intersection_list())
-        print(simulator._intersection_list[0].get_street_list())
-        for i in range(0, len(simulator._intersection_list[0].get_street_list())):
-            print(simulator._intersection_list[0]._street_list[i].get_end_lanes())
-            print(simulator._intersection_list[0]._street_list[i].get_begin_lanes())
-        # print(simulator._intersection_list[0]._street_list[0]._end_lanes[0].get_vehicle_list())
-        # visually create intersection, street, and lane
-        # create vehicles
-
-        # For number of streets
-
-        # for j in range(0, len(simulator._intersection_list[0].get_street_list())):
-        # simulator._intersection_list[0].straight(j, 3)
-        """print("STRAIGHT TEST")
-        print("Beginning State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[2]._lane_list[1].get_vehicle_list())
-        simulator._intersection_list[0].straight(0, 3)
-        print("Beginning End State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[2]._lane_list[1].get_vehicle_list())
-        print()
-        print()
-        print("LEFT TEST")
-        print("Beginning State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
-        simulator._intersection_list[0].left(0)
-        print()
-        print("Beginning End State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[3]._lane_list[1].get_vehicle_list())
-        print()
-        print()
-        print("RIGHT TEST")
-        print("Beginning State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[4].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[1]._lane_list[0].get_vehicle_list())
-        simulator._intersection_list[0].right(0)
-        print()
-        print("Beginning End State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[4].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[1]._lane_list[0].get_vehicle_list())
-        """
-
-        """
-        print("STRAIGHT WITH LIGHT")
-        print("Beginning State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[2]._lane_list[1].get_vehicle_list())
-        #simulator._intersection_list[0]._street_list[0]._lane_list[3].set_light_status(True) #set light status
-        #print("STATUS: %s" % simulator._intersection_list[0]._street_list[0]._lane_list[3].get_light_status())
-        if simulator._intersection_list[0]._street_list[0]._lane_list[3].get_light_status():
-            simulator._intersection_list[0].straight(0, 3)
-        print("Beginning End State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[3].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[2]._lane_list[1].get_vehicle_list())
-        print()
-        print()
-        """
-
-        """
-        print("LEFT TEST WITH LIGHTS")
-        print("Beginning State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[2]._lane_list[2].get_vehicle_list())
-        simulator._intersection_list[0]._street_list[0]._lane_list[2].set_light_status(True) #set light status
-        simulator._intersection_list[0]._street_list[2]._lane_list[2].set_light_status(True) #set light status
-        if simulator._intersection_list[0]._street_list[0]._lane_list[2].get_light_status(): #if the light is green, turn left
-            simulator._intersection_list[0].left(0)
-        if simulator._intersection_list[0]._street_list[2]._lane_list[2].get_light_status():
-            simulator._intersection_list[0].left(2)
-        print()
-        print("Beginning End State:\n--------------------------------")
-        print(simulator._intersection_list[0]._street_list[0]._lane_list[2].get_vehicle_list())
-        print(simulator._intersection_list[0]._street_list[2]._lane_list[2].get_vehicle_list())
-        print()
-        print()
-        """
-        print()
-        print()
-
-        print("Checking the starting coordinates of all lanes")
         for intersection in simulator._intersection_list:
             for street in intersection._street_list:
-                for lane_index in range(0, len(street._lane_list)):
-                    print("%s's coordinates are (%d, %d)" % (street._name, street._lane_list[lane_index]._starting_coordinate[0], street._lane_list[lane_index]._starting_coordinate[1]))
-
+                for lane in street._lane_list[len(street._end_lanes):]:
+                    if lane.get_light_status():
+                        #Light is Green
+                        action_index = random.randint(0, len(lane._types_of_actions))
+                        action = lane.types_of_actions[action_index]
+                        if action == 'left':
+                            street_index = intersection._street_list.index(street)
+                            intersection.left()
+                        elif action == 'straight':
+                            street_index = intersection._street_list.index(street)
+                            lane_index = street._lane_list.index(lane)
+                            intersection.straight(street_index,lane_index)
+                        elif action == 'right':
+                            street_index = intersection._street_list.index(street)
+                            intersection.right()
+                        else:
+                            raise Exception
+                    print("Ran lane")
 
         break

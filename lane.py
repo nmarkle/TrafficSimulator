@@ -27,6 +27,9 @@ class Lane:
             total_lane_volume (int)         : Metric for the number of cars that passed through the lane
             total_lane_wait_time (float)    : Metric for the amount of time each car waited in the lane
             vehicle_list (list of Vehicle)  : The Vehicles present in this lane
+            light_status (bool)             : Whether the light is on or not
+            logger (Logger)                 : The Logger to handle errors within the Lane
+            starting_coordinate (tuple)     : A tuple to keep track of the coordinate
 
         Methods
         -------
@@ -41,10 +44,10 @@ class Lane:
             set_total_lane_volume()         : Setter for total_lane_volume
             get_total_lane_wait_time()      : Getter for total_lane_wait_time
             calculate_total_lane_wait_time(): Setter for total_lane_wait_time
+            
             enqueue()                       : Adds a vehicle to the bottom of end_list
             dequeue()                       : Removes a vehicle from the top of vehicle_list 
             get_vehicle_list                : Gets the vehicle_list
-
             get_light_status()              : Getter for light_status
             set_light_status()              : Setter for light_status
             change_light()                  : Inverses the current boolean status
@@ -353,7 +356,7 @@ class Lane:
                 
     def get_vehicle_list(self):
         """
-        get vehicle_list
+        Getter for the vehicle_list
 
         Parameters
         ----------
