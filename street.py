@@ -40,7 +40,8 @@ class Street:
             add_begin_lane()                    : Adds begin_lane to begin_lanes
             add_end_lane()                      : Adds end_lane to end_lanes
             get_end_lane()                      : Getter for end_lanes
-            delete_end_lane()                   : Delete lane from end_lane
+            delete_end_lane()                   : Delete lane from end_lanes
+            delete_begin_lane()                 : Delete lane from begin_lanes
             calculate_total_street_wait_time()  : Street wait_time for all lanes
             calculate_street_volume()           : Street volume for all lanes            
         """
@@ -212,7 +213,7 @@ class Street:
 
         Parameters
         ----------
-            new_begin_lane (string) : Lane object
+            new_begin_lane (Lane) : Lane object
 
         Returns
         -------
@@ -224,7 +225,7 @@ class Street:
             try:
                 self._begin_lanes.append(new_begin_lane)
             except Exception as e:
-                self._logger.write("Error! Could add new_begin_lane to lane_list: \n %s" % e)
+                self._logger.write("Error! Could add new_begin_lane to _begin_lanes: \n %s" % e)
 
     def add_end_lane(self, new_end_lane):
         """
@@ -232,7 +233,7 @@ class Street:
 
         Parameters
         ----------
-            new_end_lane (string) : Lane object
+            new_end_lane (Lane) : Lane object
 
         Returns
         -------
@@ -244,7 +245,7 @@ class Street:
             try:
                 self._end_lanes.append(new_end_lane)
             except Exception as e:
-                self._logger.write("Error! Could add new_end_lane to lane_list: \n %s" % e)
+                self._logger.write("Error! Could add new_end_lane to _end_lanes: \n %s" % e)
 
     def get_end_lanes(self):
         """
@@ -256,7 +257,7 @@ class Street:
 
         Returns
         -------
-            end_lanes (string) : List of lanes
+            end_lanes (Lane) : List of lanes
         """
         if(self._end_lanes == None):
             self._logger.write("Error! end_lanes contains no value")
@@ -274,7 +275,7 @@ class Street:
 
         Parameters
         ----------
-            lane (string) : Lane Object
+            lane (Lane) : Lane Object
 
         Returns
         -------
@@ -297,7 +298,7 @@ class Street:
 
         Parameters
         ----------
-            lane (string) : Lane Object
+            lane (Lane) : Lane Object
 
         Returns
         -------
@@ -370,4 +371,3 @@ class Street:
                     self._average_street_volume = self._average_street_volume/ len(self._lane_list)
             except Exception as e:
                 self._logger.write("Error! Could not calculate average_street_volume: \n %s" % e)
-
