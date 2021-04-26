@@ -3,9 +3,9 @@ from logger import Logger
 __author__ = "Blake Vogel"
 __created__ = "04-09-2021"
 __editor__ = "Blake Vogel"
-__edited__ = "04-16-2021"
+__edited__ = "04-26-2021"
 __rationale___ = "Initial Creation"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __maintainer__ = "Blake Vogel"
 __email__ = "bvogel@highpoint.edu"
 __status__ = "In development need to still go over perform_action method"
@@ -21,9 +21,12 @@ class Vehicle:
         have a wait time that is updated each time the vehicle waits at an intersection.
         These variables can be accessed using getter and setter functions.
 
-        Parameters
+        Attributes
         ----------
-            N/A
+            x_pos (float)               : x position of where a vehicle is
+            y_pos (float)               : y position of where a vehicle is 
+            action_list (list)          : a list of actions
+            wait_time (float)           : the wait time a vehicle experiences at a light
 
         Methods
         -------
@@ -38,12 +41,10 @@ class Vehicle:
             add_action()            : Add action to action_list
             delete_action()         : Delete action from action_list
         """
-        self._path = []
         self._x_pos = None
         self._y_pos = None
         self._action_list = []
         self._wait_time = None
-        self._time_entered_queue = None
         self._logger = Logger()
     
     def choose_action(self):

@@ -10,7 +10,7 @@ import json, time, random
 __author__ = "Vincent Fazio"
 __created__ = "04-11-2021"
 __editor__ = "Vincent Fazio, Blake Vogel, Nathan Markle, Travis Stop, Anthony Demattos"
-__edited__ = "04-12-2021"
+__edited__ = "04-26-2021"
 __rationale___ = "Initial Creation"
 __version__ = "0.2.3"
 __maintainer__ = "Vincent Fazio, Blake Vogel, Nathan Markle, Travis Stop, Anthony Demattos"
@@ -24,27 +24,34 @@ class Simulator:
         The Simulator class will be responsible for keeping track of
         and controlling the state of the simulation.
 
-        Parameters
+        Attributes
         ----------
-            N/A
+            running_state (boolean)               : boolean of the running status
+            paused_state (boolean)                : boolean fo the paused status
+            stopped_state (boolean)               : boolean of the stopped status 
+            intersection_list (list)              : a list of intersections
+            day_of_week (string)                  : day of the week to simulate
+            time_of_day (string)                  : time of time to simulate
+            duration_of_simulation (float)        : duration of how long the simulator will run
+            interval (int)                        : interval that the simulator will wait to change a light
 
         Methods
         -------
-        set_running_state()             : Setter for running_state
-        get_running_state()             : Getter for running_state
-        set_paused_state()              : Setting for paused_state
-        get_paused_state()              : Getter for paused_state
-        set_stopped_state()             : Setting for stopped state
-        get_stopped_state()             : Getter for stopped state
-        add_intersection()              : Appends new_intersection to intersection_list
-        delete_intersection()           : Deletes intersection from intersection_list (Is this suppose to be new_intersection object? -If so update the arch. design)
-        get_intersection_list()         : Getter for intersection_list
-        set_day_of_week()               : Setting for day_of_week
-        get_day_of_week()               : Getter for day_of_week
-        set_time_of_day()               : Setting for time_of_day
-        get_time_of_day()               : Getter for time_of_day
-        set_duration_of_simulation()    : Setting for duration_of_simulation
-        get_duration_of_simulation()    : Getter for duration_of_simulation
+            set_running_state()             : Setter for running_state
+            get_running_state()             : Getter for running_state
+            set_paused_state()              : Setting for paused_state
+            get_paused_state()              : Getter for paused_state
+            set_stopped_state()             : Setting for stopped state
+            get_stopped_state()             : Getter for stopped state
+            add_intersection()              : Appends new_intersection to intersection_list
+            delete_intersection()           : Deletes intersection from intersection_list (Is this suppose to be new_intersection object? -If so update the arch. design)
+            get_intersection_list()         : Getter for intersection_list
+            set_day_of_week()               : Setting for day_of_week
+            get_day_of_week()               : Getter for day_of_week
+            set_time_of_day()               : Setting for time_of_day
+            get_time_of_day()               : Getter for time_of_day
+            set_duration_of_simulation()    : Setting for duration_of_simulation
+            get_duration_of_simulation()    : Getter for duration_of_simulation
 
         """
         # All class variables
@@ -59,7 +66,6 @@ class Simulator:
         self._parser = c.ConfigParser()
         self._parser.read("config.ini")
         self._number_of_intersections = int(self._parser["simulation"]["number_of_intersections"])
-        self._intersections = []
 
         # Build from the configuration file
         for i in range(0, self._number_of_intersections):

@@ -4,9 +4,9 @@ from lane import Lane
 __author__ = "Blake Vogel"
 __created__ = "04-10-2021"
 __editor__ = "Blake Vogel"
-__edited__ = "04-16-2021"
+__edited__ = "04-26-2021"
 __rationale___ = "Initial Creation"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __maintainer__ = "Blake Vogel"
 __email__ = "bvogel@highpoint.edu"
 __status__ = "In development"
@@ -18,26 +18,31 @@ class Street:
         The Street class is responsible for keeping track of information about a street.
          Particularly the name of the street, its orientation, and the lanes that compose the street.
 
-        Parameters
+        Attributes
         ----------
-            N/A
+            name (string)                       : the name of a street
+            orientation (string)                : the orientation of a street i.e. (N,S) or (E,W)
+            lane_list (list)                    : list of lanes
+            average_street_wait_time (float)    : average street wait time
+            average_street_volume (float)       : average street volume over a certain time
+            begin_lanes (list)                  : list of begin lanes where begins wait in to move through an intersection
+            end_lanes (list)                    : list of end lanes where vehicles turn into
 
         Methods
         -------
-            set_name()                      : Setter for name
-            get_name()                      : Getter for name
-            set_orientation()               : Setter for orientation
-            get_orientation()               : Getter for orientation
-            get_lane_list()                 : Getter for lane_list
-            set_lane_list()                 : Setter for lane_list
-            add_lane()                      : Add lane to lane_list
-            delete_lane()                   : Delete lane from lane_list
-            calculate_street_wait_time()    : Street wait_time for all lanes
-            calculate_street_volume()       : Street volume for all lanes
-            add_begin_lane                  : Adds begin_lane to begin_lanes
-            add_end_lane                    : Adds end_lane to end_lanes
-            get_begin_lane                  : Getter for being_lanes
-            get_end_lane                    : Getter for end_lanes
+            set_name()                          : Setter for name
+            get_name()                          : Getter for name
+            set_orientation()                   : Setter for orientation
+            get_orientation()                   : Getter for orientation
+            get_lane_list()                     : Getter for lane_list
+            set_lane_list()                     : Setter for lane_list
+            get_begin_lanes()                   : Getter for being_lanes
+            add_begin_lane()                    : Adds begin_lane to begin_lanes
+            add_end_lane()                      : Adds end_lane to end_lanes
+            get_end_lane()                      : Getter for end_lanes
+            delete_end_lane()                   : Delete lane from end_lane
+            calculate_total_street_wait_time()  : Street wait_time for all lanes
+            calculate_street_volume()           : Street volume for all lanes            
         """
 
         self._name = None

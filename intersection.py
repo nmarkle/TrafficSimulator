@@ -1,9 +1,9 @@
 __author__ = "Blake Vogel"
 __created__ = "04-20-2021"
 __editor__ = "Blake Vogel"
-__edited__ = "04-20-2021"
+__edited__ = "04-26-2021"
 __rationale___ = "Created"
-__version__ = "0.0.1"
+__version__ = "0.0.3"
 __maintainer__ = "Blake Vogel"
 __email__ = "bvogel@highpoint.edu"
 __status__ = "In development"
@@ -25,9 +25,10 @@ class Intersection():
         Attributes
         ----------
             street_list (list of Street objects) : List to hold all the Streets of an Intersection
-            average_wait_time = None
-            total_traffic_volume = None
-            logger = logger.Logger()
+            average_wait_time                    : average wait time 
+            traffic_light_list (list)            : list of traffic lights
+            total_traffic_volume                 : total traffic volume
+            logger = logger.Logger()             : logger object
 
         Methods
         -------
@@ -48,6 +49,7 @@ class Intersection():
         """
         self._street_list = []
         self._average_wait_time = None
+        self._traffic_light_list = []
         self._total_traffic_volume = None
         self._logger = Logger()
 

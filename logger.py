@@ -18,10 +18,6 @@ class Logger:
         """
         The ultimate logger for all error messages within the Traffic Simulator.
 
-        Parameters
-        ----------
-            N/A
-
         Methods
         -------
             initialize() : Creates the logging directory and file to store data

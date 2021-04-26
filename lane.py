@@ -4,9 +4,9 @@ from vehicle import Vehicle
 __author__ = "Blake Vogel"
 __created__ = "04-09-2021"
 __editor__ = "Blake Vogel, Nathan Markle"
-__edited__ = "04-16-2021"
+__edited__ = "04-26-2021"
 __rationale___ = "Fixed errors"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __maintainer__ = "Blake Vogel"
 __email__ = "bvogel@highpoint.edu"
 __status__ = "In development"
@@ -44,7 +44,6 @@ class Lane:
             set_total_lane_volume()         : Setter for total_lane_volume
             get_total_lane_wait_time()      : Getter for total_lane_wait_time
             calculate_total_lane_wait_time(): Setter for total_lane_wait_time
-            
             enqueue()                       : Adds a vehicle to the bottom of end_list
             dequeue()                       : Removes a vehicle from the top of vehicle_list 
             get_vehicle_list                : Gets the vehicle_list

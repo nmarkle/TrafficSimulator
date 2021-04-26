@@ -14,26 +14,7 @@ __status__ = "In development"
 class Reporter:
     def __init__(self):
         """
-
-        HAVING TROUBLE CREATING THESE FUNCTIONS, DONT THEY HAVE TO CALL EACH OTHER?
-            WHATS THE POINT IN SETTING AND GETTING THE FILE PATH?
-                ISNT IT SO OPEN/CLOSE CAN USE THOSE GETTER/SETTERS TO OPEN AND CLOSE THE FILE PATH?
-            HOW DO I DECLARE REPORT_FILE PATH? IS THAT RIGHT
-            FAILED TO OPEN FILE - WHAT DOES THIS MEAN HOW DO I WRITE THIS ERROR
-                SYNTAX ERRORS, WHATS THE PROPER SYNTAX IF ITS A STRING
-                ALSO IF THE PATH IS CODED INTO SELF._report_file_path = "./report/report.log", DOES IT EVEN MATTER
-            DONT I ALSO NEED TO PASS THE BOOLEAN FILE_OPENED AROUND IN GENERATE REPORT,open/close functions MEANING GENERATE REPORT NEEDS ACCESS TO OPEN/CLOSE
-                AND OPEN/CLOSE NEEDS ACCESS TO SETTER/GETTERS
-
-            WE NEED TO ADD MORE SHIT AND REDESIGN, I DONT UNDERSTAND WHY WE HAVE THESE SETTER/GETTERS BUT WE NEVER CALL THEM/USE THEM?
-
-            MAY NEED TO ADD A FILE OBJECT? OPEN/CLOSE NEED TO ACCESS THE FILE OBJECT THAT IS CREATED TO F.OPEN() / F.CLOSE()
-
-        The reporter class will be responsible for accessing the intersection class in order to pull the metrics stored there. 
-        With these metrics, the reporter class will then open the output file specified at the report_file_path 
-        and print relevant metric data from the simulation.
-        
-        Parameters
+        Attributes
         ----------
             N/A
         
@@ -53,8 +34,9 @@ class Reporter:
         self._logger = logger.Logger()
     
     def generate_report(self):
+        pass
     
-    def open_report_file(self): """ Dont we need to pass in report_file_path"""
+    def open_report_file(self):
        """
        Open_report_file will open the report.log file for writing and set the file_opened variable to True. 
        If the opening of the report.log file was a success, return True. Otherwise, return false.
@@ -66,7 +48,6 @@ class Reporter:
         -------
             file_opened (boolean) : Class variable to store the state of 'File_opened'
         """
-        
         fName = "./report/report.log"
 
         if os.path.exists(fName):
