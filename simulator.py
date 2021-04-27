@@ -52,7 +52,8 @@ class Simulator:
             get_time_of_day()               : Getter for time_of_day
             set_duration_of_simulation()    : Setting for duration_of_simulation
             get_duration_of_simulation()    : Getter for duration_of_simulation
-
+            get_interval()                  : Getter for interval
+            set_interval()                  : Setter for interval
         """
         # All class variables
         self._running_state = None
@@ -66,6 +67,7 @@ class Simulator:
         self._parser = c.ConfigParser()
         self._parser.read("config.ini")
         self._number_of_intersections = int(self._parser["simulation"]["number_of_intersections"])
+        self._interval = None
 
         # Build from the configuration file
         for i in range(0, self._number_of_intersections):
@@ -98,14 +100,20 @@ class Simulator:
                 # Iterates through the number of beginlanes
                 for q in range(0, int(self._parser[street_key]["beginlanes"])):
                     temp_lane = Lane()
-                    temp_lane.set_max_vehicle_capacity(
-                        int(self._parser[street_key]["queue_length"]))
+                    if q == 0:
+                        temp_lane.add_types_of_actions('left')
+                    if q < int(self._parser[street_key]["beginlanes"])-1 and q > 0:
+                        temp_lane.add_types_of_actions('straight')
+                    if q == int(self._parser[street_key]["beginlanes"])-1:
+                        temp_lane.add_types_of_actions('right')
+                    temp_lane.set_max_vehicle_capacity(int(self._parser[street_key]["queue_length"]))
                     # Add the temp lane to the temp street
                     #all lights are red
                     temp_lane.set_light_status(False)
                     temp_street.add_begin_lane(temp_lane)
-                    temp_vehicle = Vehicle()
-                    temp_lane.enqueue(temp_vehicle)
+                    for v in range(1,5):
+                        temp_vehicle = Vehicle()
+                        temp_lane.enqueue(temp_vehicle)
 
                 # Fetch coordinate list from config file
                 coordinate_list = json.loads(self._parser.get(street_key, "start_coordinates"))
@@ -479,6 +487,42 @@ class Simulator:
                 self._logger.write(
                     "Error! Could not fetch the value of duration_of_simulation: \n %s" % e)
 
+    def set_interval(self, new_interval):
+        """
+        Assigns new_interval value to interval
+
+        Parameters
+        ----------
+            new_interval (int) : The new value for 'interval' variable
+        Returns
+        -------
+            N/A
+        """
+        if type(new_interval) != int:
+            self._logger.write('Error! new_interval needs to be of type int')
+        try:
+            self._interval = new_interval
+        except Exception as e:
+            self._logger.write('Error! Failed to set new_interval:\n %s' % e)
+    
+    def get_interval(self):
+        """
+        Gets the interval value
+
+        Parameters
+        ----------
+            N/A
+        Returns
+        -------
+            interval (int) : Class variable for the value of interval 
+        """
+        if self._interval is None:
+            self._logger.write('Error! interval is of type None')
+        try:
+            return self._interval
+        except Exception as e:
+            self._logger.write('Error! Failed to return interval:\n %s' % e)
+
 
 if __name__ == "__main__":
     simulator = Simulator()
@@ -487,22 +531,35 @@ if __name__ == "__main__":
         for intersection in simulator._intersection_list:
             for street in intersection._street_list:
                 for lane in street._lane_list[len(street._end_lanes):]:
-                    if lane.get_light_status():
-                        #Light is Green
-                        action_index = random.randint(0, len(lane._types_of_actions))
-                        action = lane.types_of_actions[action_index]
-                        if action == 'left':
-                            street_index = intersection._street_list.index(street)
-                            intersection.left()
-                        elif action == 'straight':
-                            street_index = intersection._street_list.index(street)
-                            lane_index = street._lane_list.index(lane)
-                            intersection.straight(street_index,lane_index)
-                        elif action == 'right':
-                            street_index = intersection._street_list.index(street)
-                            intersection.right()
-                        else:
-                            raise Exception
-                    print("Ran lane")
-
+                    simulator.set_interval(2)
+                    lane.set_light_status(True)
+                    print('Street: %s' % street.get_name())
+                    while(simulator.get_interval() > 0):
+                        print("Light Time: %s" % simulator.get_interval())
+                        if lane.get_light_status():
+                            print("Light is Green")
+                            #Light is Green
+                            print("Lane: %s" % str(street._begin_lanes.index(lane)))
+                            if len(lane._types_of_actions) > 1:
+                                action_index = random.randint(0, len(lane._types_of_actions))
+                            else: 
+                                action_index = 0
+                            action = lane._types_of_actions[action_index]
+                            if action == 'left' and len(lane._vehicle_list) != 0:
+                                street_index = intersection._street_list.index(street)
+                                intersection.left(street_index)
+                                print('Moved Vehicle Left')
+                            elif action == 'straight' and len(lane._vehicle_list) != 0:
+                                street_index = intersection._street_list.index(street)
+                                lane_index = street._lane_list.index(lane)
+                                print('Moved Vehicle Straight')
+                                intersection.straight(street_index,lane_index)
+                            elif action == 'right' and len(lane._vehicle_list) != 0:
+                                street_index = intersection._street_list.index(street)
+                                intersection.right(street_index)
+                                print('Moved Vehicle Right')
+                            print("----------------------")
+                            simulator.set_interval(simulator.get_interval()-2)
+                            time.sleep(2)
+                    lane.set_light_status(False)
         break

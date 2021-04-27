@@ -338,6 +338,8 @@ class Intersection():
             self._logger.write('Error! destination_lane needs to be of type int')
         try:
             v = self._street_list[origin_street]._lane_list[origin_lane].dequeue()
+            if v is None:
+                print('vehicle queue is empty')
             self._street_list[destination_street]._lane_list[destination_lane].enqueue(v)
         except Exception as e:
             self._logger.write('Error! failed to removed vehicle from origin_lane and move it to destination_lane:\n %s' % e)

@@ -123,7 +123,7 @@ class Lane:
         """
         if(self._types_of_actions == None):
             self._logger.write("Error! types_of_action contains no value")
-        elif(len(types_of_actions) == 0):
+        elif(len(self._types_of_actions) == 0):
             self._logger.write("Error! types_of_actions list is empty")
         else:
             try:
